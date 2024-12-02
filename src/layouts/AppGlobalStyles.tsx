@@ -5,7 +5,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
-
 export const ColorModeContext = React.createContext({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   toggleColorMode: () => {},
@@ -31,7 +30,7 @@ export function AppGlobalStyles({ children }: { children: ReactNode }) {
         });
       },
     }),
-    []
+    [],
   );
 
   useEffect(() => {
@@ -44,7 +43,8 @@ export function AppGlobalStyles({ children }: { children: ReactNode }) {
   }, []);
 
   const theme = useMemo(() => {
-    const themeCreate = createTheme(getDesignTokens(mode));
+    // const themeCreate = createTheme(getDesignTokens(mode));
+    const themeCreate = createTheme(getDesignTokens('dark'));
     return deepmerge(themeCreate, getThemedComponents(themeCreate));
   }, [mode]);
 

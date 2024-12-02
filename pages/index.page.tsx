@@ -1,9 +1,10 @@
+import { ContentContainer } from "@/components/ContentContainer";
 import { MainLayout } from "@/layouts/MainLayout";
 
 
 
 export default function Home() {
-  return <>1111111111</>;
+  return <ContentContainer>1</ContentContainer>;
 }
 
 Home.getLayout = function getLayout(page: React.ReactElement) {
