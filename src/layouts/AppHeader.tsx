@@ -11,6 +11,8 @@ import React from 'react';
 import { Link } from '@/components/primitives/Link';
 import { uiConfig } from '@/uiConfig';
 import { NavItems } from './components/NavItems';
+import SettingsMenu from './SettingMenu';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 // import NavItems from './components/NavItems';
 // import styles from './styles/AppHeader.module.less'
 // import SettingsMenu from './SettingsMenu';
@@ -69,15 +71,15 @@ const AppHeader = () => {
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <NavItems />
         </Box>
-        {/* 
-        <Box sx={{ display: 'flex', flexDirection: 'row-reverse', flex: 1 }}>
-          <div className={styles['connect-button-container']}>
-            <ConnectButton />
-          </div>
+
+        <Box sx={{ flexGrow: 1 }} />
+        
+        <Box>
+          <ConnectButton />
         </Box>
         <Box>
           <SettingsMenu />
-        </Box> */}
+        </Box>
       </Box>
     </HideOnScroll>
   );

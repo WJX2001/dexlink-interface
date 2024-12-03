@@ -4,10 +4,10 @@ import { WagmiProvider } from 'wagmi';
 import { config } from '../src/wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { AppGlobalStyles } from '@/layouts/AppGlobalStyles';
 import { Box } from '@mui/material';
-
+import '@rainbow-me/rainbowkit/styles.css';
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };

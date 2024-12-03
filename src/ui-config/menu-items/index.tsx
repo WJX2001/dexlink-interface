@@ -26,6 +26,16 @@ export const navigation: Navigation[] = [
     link: ROUTES.INDEX,
     title: `Index`,
     dataCy: 'menuIndex',
+  },
+  {
+    link: ROUTES.STAKE,
+    title: `Stake`,
+    dataCy: 'menuStake',
+  },
+  {
+    link: ROUTES.LOAN,
+    title: `Loan`,
+    dataCy: 'menuLoan',
   }
   
 ];

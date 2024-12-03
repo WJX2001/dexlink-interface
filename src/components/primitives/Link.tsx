@@ -117,5 +117,8 @@ export const ROUTES = {
   dashboard: '/',
   SWAP: '/swap',
   LIQUIDITY: '/liquidity',
-  INDEX: '/index'
+  INDEX: '/index',
+  STAKE: '/stake',
+  LOAN: '/loan',
+  EXPLORE: '/explore'
 };
