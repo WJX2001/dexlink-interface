@@ -9,6 +9,7 @@ import { Link } from '../../components/primitives/Link';
 
 // import { MoreMenu } from '../MoreMenu';
 import { navigation } from '@/ui-config/menu-items';
+import MoreMenu from '../MoreMenu';
 
 interface NavItemsProps {
   setOpen?: (value: boolean) => void;
@@ -28,9 +29,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
   //     trackEvent(NAV_BAR.MAIN_MENU, { nav_link: title });
   //   }
   // };
-  const handleClick = () => {
-
-  }
+  const handleClick = () => {}
   return (
     <List
       sx={{
@@ -97,9 +96,9 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
           </ListItem>
         ))}
 
-      {/* <ListItem sx={{ display: { xs: 'none', md: 'flex' }, width: 'unset' }} disablePadding>
+      <ListItem sx={{ display: { xs: 'none', md: 'flex' }, width: 'unset' }} disablePadding>
         <MoreMenu />
-      </ListItem> */}
+      </ListItem>
     </List>
   );
 };

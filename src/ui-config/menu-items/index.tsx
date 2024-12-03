@@ -1,4 +1,6 @@
 import { ROUTES } from "@/components/primitives/Link";
+import { BookOpenIcon, QuestionMarkCircleIcon,CashIcon, CreditCardIcon } from "@heroicons/react/outline";
+import { ReactNode } from "react";
 interface Navigation {
   link: string;
   title: string;
@@ -27,15 +29,35 @@ export const navigation: Navigation[] = [
     title: `Index`,
     dataCy: 'menuIndex',
   },
+];
+
+interface MoreMenuItem extends Navigation {
+  icon?: ReactNode;
+  makeLink?: (walletAddress: string) => string;
+}
+
+const moreMenuItems: MoreMenuItem[] = [
   {
     link: ROUTES.STAKE,
     title: `Stake`,
-    dataCy: 'menuStake',
+    icon: <CreditCardIcon />
   },
   {
     link: ROUTES.LOAN,
     title: `Loan`,
-    dataCy: 'menuLoan',
-  }
+    icon: <CashIcon />
+  },
+  // {
+  //   link: 'https://docs.aave.com/faq/',
+  //   title: `FAQ`,
+  //   icon: <QuestionMarkCircleIcon />,
+  // },
+  // {
+  //   link: 'https://docs.aave.com/portal/',
+  //   title: `Developers`,
+  //   icon: <BookOpenIcon />,
+  // },
   
 ];
+
+export const moreNavigation: MoreMenuItem[] = [...moreMenuItems];

@@ -74,9 +74,9 @@ const AppHeader = () => {
 
         <Box sx={{ flexGrow: 1 }} />
         
-        <Box>
+        {/* <Box>
           <ConnectButton />
-        </Box>
+        </Box> */}
         <Box>
           <SettingsMenu />
         </Box>
