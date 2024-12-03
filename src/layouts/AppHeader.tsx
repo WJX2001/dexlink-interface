@@ -21,9 +21,7 @@ import SettingsMenu from './SettingMenu';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { useModalContext } from '@/hooks/useModal';
-// import NavItems from './components/NavItems';
 // import styles from './styles/AppHeader.module.less'
-// import SettingsMenu from './SettingsMenu';
 interface Props {
   children: React.ReactElement;
 }
@@ -74,12 +72,11 @@ function HideOnScroll({ children }: Props) {
 
 const AppHeader = () => {
   const smd = useMediaQuery('(max-width:1120px)');
-  const { openSwitch,type } = useModalContext();
+  const { openSwitch, type } = useModalContext();
   const headerHeight = 48;
   const handleSwitchClick = () => {
-    openSwitch()
+    openSwitch();
   };
-  console.log(type,'iuy')
 
   return (
     <HideOnScroll>

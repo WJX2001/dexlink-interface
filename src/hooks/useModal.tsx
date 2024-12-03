@@ -11,6 +11,7 @@ export enum ModalType {
 
 export interface ModalContextType<T extends ModalArgsType> {
   openSwitch: (underlyingAsset?: string, chainId?: number) => void;
+  close: () => void;
   args: T;
   type?: ModalType;
 }
@@ -37,8 +38,12 @@ export const ModalContextProvider: React.FC<ModalContextProviderProps> = ({
           setType(ModalType.Switch);
           setArgs({ underlyingAsset, chainId });
         },
+        close: () => {
+          setType(undefined);
+          setArgs({});
+        },
         args,
-        type
+        type,
       }}
     >
       {children}
