@@ -4,7 +4,7 @@ import { MainLayout } from "@/layouts/MainLayout";
 
 
 export default function Home() {
-  return <ContentContainer>1</ContentContainer>;
+  return <ContentContainer>123423</ContentContainer>;
 }
 
 Home.getLayout = function getLayout(page: React.ReactElement) {

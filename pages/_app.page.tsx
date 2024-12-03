@@ -8,6 +8,7 @@ import { ReactNode } from 'react';
 import { AppGlobalStyles } from '@/layouts/AppGlobalStyles';
 import { Box } from '@mui/material';
 import '@rainbow-me/rainbowkit/styles.css';
+import { ModalContextProvider } from '@/hooks/useModal';
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
@@ -32,7 +33,9 @@ export default function App({ Component, pageProps }: MyAppProps) {
         <QueryClientProvider client={client}>
           <RainbowKitProvider>
             <AppGlobalStyles>
-              {getLayout(<Component {...pageProps} />)}
+              <ModalContextProvider>
+                {getLayout(<Component {...pageProps} />)}
+              </ModalContextProvider>
             </AppGlobalStyles>
           </RainbowKitProvider>
         </QueryClientProvider>

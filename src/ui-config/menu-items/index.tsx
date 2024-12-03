@@ -15,11 +15,6 @@ export const navigation: Navigation[] = [
     dataCy: 'menuDashboard',
   },
   {
-    link: ROUTES.SWAP,
-    title: `Swap`,
-    dataCy: 'menuSwap',
-  },
-  {
     link: ROUTES.LIQUIDITY,
     title: `Liquidity`,
     dataCy: 'menuLiquidity',
@@ -29,6 +24,11 @@ export const navigation: Navigation[] = [
     title: `Index`,
     dataCy: 'menuIndex',
   },
+  {
+    link: ROUTES.STAKE,
+    title: `Stake`,
+    dataCy: 'menuStale',
+  },
 ];
 
 interface MoreMenuItem extends Navigation {
@@ -37,11 +37,11 @@ interface MoreMenuItem extends Navigation {
 }
 
 const moreMenuItems: MoreMenuItem[] = [
-  {
-    link: ROUTES.STAKE,
-    title: `Stake`,
-    icon: <CreditCardIcon />
-  },
+  // {
+  //   link: ROUTES.STAKE,
+  //   title: `Stake`,
+  //   icon: <CreditCardIcon />
+  // },
   {
     link: ROUTES.LOAN,
     title: `Loan`,

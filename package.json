@@ -25,7 +25,6 @@
     "wagmi": "^2.13.3"
   },
   "devDependencies": {
-    "@lingui/babel-plugin-lingui-macro": "^5.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

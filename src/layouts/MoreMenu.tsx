@@ -64,6 +64,7 @@ const MoreMenu = () => {
             href={
               item.makeLink ? item.makeLink(walletAddress as string) : item.link
             }
+            key={index}
           >
             <ListItemIcon>
               <SvgIcon sx={{ fontSize: '20px' }}>{item.icon}</SvgIcon>
