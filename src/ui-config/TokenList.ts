@@ -37,15 +37,6 @@ export const TOKEN_LIST: TokenList = {
     //   logoURI:
     //     'https://coin-images.coingecko.com/coins/images/31696/large/POKT.jpg?1703257336',
     // },
-    // {
-    //   name: 'Ether',
-    //   symbol: 'ETH',
-    //   address: zeroAddress, // Weth address is fetched from the router
-    //   decimals: 18,
-    //   chainId: LINEACHAINID,
-    //   logoURI:
-    //     'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
-    // },
     {
       name: 'Dai',
       symbol: 'DAI',
@@ -55,6 +46,15 @@ export const TOKEN_LIST: TokenList = {
       logoURI:
         'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
     },
+    // {
+    //   name: 'Ether',
+    //   symbol: 'ETH',
+    //   address: zeroAddress, // Weth address is fetched from the router
+    //   decimals: 18,
+    //   chainId: LINEACHAINID,
+    //   logoURI:
+    //     'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+    // },
     {
       name: 'Gold',
       symbol: 'GLD',

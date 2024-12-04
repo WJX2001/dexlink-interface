@@ -9,6 +9,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { ModalContextProvider } from '@/hooks/useModal';
 import dynamic from 'next/dynamic';
 import RainbowKitProviderCustom from '@/lib/rainboKit-provider';
+import { Web3ContextProvider } from '@/lib/web3-data-provider/Web3Provider';
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
@@ -28,14 +29,16 @@ export default function App({ Component, pageProps }: MyAppProps) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={client}>
-        <RainbowKitProviderCustom>
-          <AppGlobalStyles>
-            <ModalContextProvider>
-              {getLayout(<Component {...pageProps} />)}
-              <SwitchModal />
-            </ModalContextProvider>
-          </AppGlobalStyles>
-        </RainbowKitProviderCustom>
+        <Web3ContextProvider>
+          <RainbowKitProviderCustom>
+            <AppGlobalStyles>
+              <ModalContextProvider>
+                {getLayout(<Component {...pageProps} />)}
+                <SwitchModal />
+              </ModalContextProvider>
+            </AppGlobalStyles>
+          </RainbowKitProviderCustom>
+        </Web3ContextProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );

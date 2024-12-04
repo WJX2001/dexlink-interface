@@ -46,7 +46,8 @@ const SwitchModalContentWrapper = ({
       const defaultInputToken = baseTokenList[0];
       const defaultOutputToken = baseTokenList.find(
         (token) => token.address !== defaultInputToken.address,
-      );
+      ) as TokenInfoWithBalance;
+      console.log(defaultOutputToken,'lpo')
       return { defaultInputToken, defaultOutputToken };
     }
     return {
@@ -69,7 +70,13 @@ const SwitchModalContentWrapper = ({
     );
   }
   return (
-    <SwitchModalContent />
+    <SwitchModalContent
+      selectedChainId={chainId}
+      setSelectedChainId={setSelectedChainId}
+      defaultInputToken={defaultInputToken}
+      defaultOutputToken={defaultOutputToken}
+      tokens={baseTokenList}
+    />
   );
 };
 

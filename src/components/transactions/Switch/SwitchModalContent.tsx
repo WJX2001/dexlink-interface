@@ -1,9 +1,22 @@
-import React from 'react'
+import { TokenInfoWithBalance } from '@/hooks/generic/useTokenBalance';
+import React from 'react';
 
-const SwitchModalContent = () => {
-  return (
-    <div>SwitchModalContent</div>
-  )
+interface SwitchModalContentProps {
+  selectedChainId: number;
+  setSelectedChainId: (value: number) => void;
+  tokens: TokenInfoWithBalance[];
+  defaultInputToken: TokenInfoWithBalance;
+  defaultOutputToken: TokenInfoWithBalance;
 }
 
-export default SwitchModalContent
+const SwitchModalContent = ({
+  selectedChainId,
+  setSelectedChainId,
+  defaultInputToken,
+  defaultOutputToken,
+  tokens,
+}: SwitchModalContentProps) => {
+  return <div>SwitchModalContent</div>;
+};
+
+export default SwitchModalContent;

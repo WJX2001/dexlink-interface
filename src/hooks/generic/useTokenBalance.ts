@@ -11,14 +11,14 @@ export const useTokensBalance = (
   tokenList: TokenInfo[],
   user?: string,
   chainId?: number,
-) => {
+): TokenInfoWithBalance[] | undefined => {
   const contracts = tokenList?.map((token) => {
     return {
       address: token.address,
       abi: ERC20.abi,
       functionName: 'balanceOf',
       args: [user],
-      chainId
+      chainId,
     };
   });
 
@@ -29,11 +29,13 @@ export const useTokensBalance = (
 
   if (results) {
     let balanceArr = results.map((item) => item.result);
-    return tokenList.map((elem, index) => ({
-      ...elem,
-      balance: formatUnits(balanceArr[index] as bigint, elem.decimals),
-    })).sort((a, b) => Number(b.balance) - Number(a.balance));;
+    return tokenList
+      .map((elem, index) => ({
+        ...elem,
+        balance: formatUnits(balanceArr[index] as bigint, elem.decimals),
+      }))
+      .sort((a, b) => Number(b.balance) - Number(a.balance));
   } else {
-    return undefined
+    return undefined;
   }
 };
