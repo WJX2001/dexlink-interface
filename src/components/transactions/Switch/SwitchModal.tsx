@@ -11,6 +11,7 @@ import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from 'wagmi';
 import SwitchModalContent from './SwitchModalContent';
+import { useWeb3Context } from '@/lib/hooks/useWeb3Context';
 
 interface SwitchModalContentWrapperProps {
   user: string;
@@ -21,8 +22,9 @@ interface SwitchModalContentWrapperProps {
 const getFilteredTokens = (chainId: number): TokenInfoWithBalance[] => {
   // TODO: Temporary use once
   const realChainId = useRootStore((store) => store.currentChainId);
+  const { tokenList,factory } = useWeb3Context();
   // 这里TOKEN_LIST要换下 换成拿到WETH的结果
-  let customTokenList = TOKEN_LIST.tokens;
+  let customTokenList = tokenList.tokens;
   const savedCustomTokens = localStorage.getItem('customTokens');
   if (savedCustomTokens) {
     customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));
@@ -47,7 +49,6 @@ const SwitchModalContentWrapper = ({
       const defaultOutputToken = baseTokenList.find(
         (token) => token.address !== defaultInputToken.address,
       ) as TokenInfoWithBalance;
-      console.log(defaultOutputToken,'lpo')
       return { defaultInputToken, defaultOutputToken };
     }
     return {

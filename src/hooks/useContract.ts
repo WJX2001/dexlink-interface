@@ -2,7 +2,6 @@ import { getContract } from '@/utils/contractHelper';
 import { useMemo } from 'react';
 import { Abi, Address } from 'viem';
 import { useChainId, useWalletClient } from 'wagmi';
-
 type UseContractOptions = {
   chainId?: number;
 };
@@ -35,3 +34,5 @@ export function useContract<TAbi extends Abi>(
     }
   }, [addressOrAddressMap, abi, chainId, walletClient]);
 }
+
+
