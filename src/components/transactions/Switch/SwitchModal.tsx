@@ -1,12 +1,16 @@
 import BasicModal from '@/components/primitives/BasicModal';
-import { TokenInfoWithBalance } from '@/hooks/generic/useTokenBalance';
+import {
+  TokenInfoWithBalance,
+  useTokensBalance,
+} from '@/hooks/generic/useTokenBalance';
 import { ModalType, useModalContext } from '@/hooks/useModal';
 import { useRootStore } from '@/store/root';
 import { TOKEN_LIST } from '@/ui-config/TokenList';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from 'wagmi';
+import SwitchModalContent from './SwitchModalContent';
 
 interface SwitchModalContentWrapperProps {
   user: string;
@@ -15,7 +19,7 @@ interface SwitchModalContentWrapperProps {
 }
 
 const getFilteredTokens = (chainId: number): TokenInfoWithBalance[] => {
-  // Temporary use once
+  // TODO: Temporary use once
   const realChainId = useRootStore((store) => store.currentChainId);
   // 这里TOKEN_LIST要换下 换成拿到WETH的结果
   let customTokenList = TOKEN_LIST.tokens;
@@ -26,7 +30,6 @@ const getFilteredTokens = (chainId: number): TokenInfoWithBalance[] => {
   const transformedTokens = customTokenList.map((token) => {
     return { ...token, balance: '0' };
   });
-  // TODO: 后续要根据真实的networkId 进行筛选 这里暂时直接返回
   return transformedTokens.filter((token) => token.chainId === realChainId);
 };
 
@@ -35,8 +38,39 @@ const SwitchModalContentWrapper = ({
   chainId,
   setSelectedChainId,
 }: SwitchModalContentWrapperProps) => {
-  const filteredTokens = useMemo(() => getFilteredTokens(chainId), [chainId]);
-  return <div>22222</div>;
+  const filteredTokens = getFilteredTokens(chainId);
+  const baseTokenList = useTokensBalance(filteredTokens, user);
+
+  const { defaultInputToken, defaultOutputToken } = useMemo(() => {
+    if (baseTokenList) {
+      const defaultInputToken = baseTokenList[0];
+      const defaultOutputToken = baseTokenList.find(
+        (token) => token.address !== defaultInputToken.address,
+      );
+      return { defaultInputToken, defaultOutputToken };
+    }
+    return {
+      defaultInputToken: filteredTokens[0],
+      defaultOutputToken: filteredTokens[1],
+    };
+  }, [baseTokenList, filteredTokens]);
+  if (!baseTokenList) {
+    return (
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          my: '60px',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+  return (
+    <SwitchModalContent />
+  );
 };
 
 export const SwitchModal = () => {
