@@ -21,6 +21,7 @@ import SettingsMenu from './SettingMenu';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { useModalContext } from '@/hooks/useModal';
+import ConnectWallletButton from './components/WalletConnection/ConnectWallletButton';
 // import styles from './styles/AppHeader.module.less'
 interface Props {
   children: React.ReactElement;
@@ -148,9 +149,9 @@ const AppHeader = () => {
             </Button>
           </StyledBadge>
         </NoSsr>
-        {/* <Box>
-          <ConnectButton />
-        </Box> */}
+        <Box>
+          <ConnectWallletButton />
+        </Box>
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <SettingsMenu />
         </Box>
