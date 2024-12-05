@@ -1,7 +1,8 @@
 import { TokenInfo } from '@/ui-config/TokenList';
-import ERC20 from '@/abis/ERC20.json';
+
 import { useReadContracts } from 'wagmi';
 import { Address, formatUnits } from 'viem';
+import { ERC20_ABI } from '@/abis/Erc20';
 export interface TokenInfoWithBalance extends TokenInfo {
   balance: string;
   oracle?: string;
@@ -15,7 +16,7 @@ export const useTokensBalance = (
   const contracts = tokenList?.map((token) => {
     return {
       address: token.address,
-      abi: ERC20.abi,
+      abi: ERC20_ABI,
       functionName: 'balanceOf',
       args: [user],
       chainId,

@@ -40,7 +40,7 @@ export const TOKEN_LIST: TokenList = {
     {
       name: 'Ether',
       symbol: 'ETH',
-      address: zeroAddress, // Weth address is fetched from the router
+      address: '0x10253594A832f967994b44f33411940533302ACb', // Weth address is fetched from the router
       decimals: 18,
       chainId: LINEACHAINID,
       logoURI:

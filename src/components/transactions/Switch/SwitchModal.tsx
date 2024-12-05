@@ -5,7 +5,7 @@ import {
 } from '@/hooks/generic/useTokenBalance';
 import { ModalType, useModalContext } from '@/hooks/useModal';
 import { useRootStore } from '@/store/root';
-import { TOKEN_LIST } from '@/ui-config/TokenList';
+import { TOKEN_LIST, TokenList } from '@/ui-config/TokenList';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
 import { useEffect, useMemo, useState } from 'react';
@@ -19,11 +19,11 @@ interface SwitchModalContentWrapperProps {
   setSelectedChainId: (chainId: number) => void;
 }
 
-const getFilteredTokens = (chainId: number): TokenInfoWithBalance[] => {
-  // TODO: Temporary use once
-  const realChainId = useRootStore((store) => store.currentChainId);
-  const { tokenList,factory } = useWeb3Context();
-  // 这里TOKEN_LIST要换下 换成拿到WETH的结果
+const getFilteredTokens = (
+  chainId: number,
+  realChainId: number,
+  tokenList: TokenList,
+): TokenInfoWithBalance[] => {
   let customTokenList = tokenList.tokens;
   const savedCustomTokens = localStorage.getItem('customTokens');
   if (savedCustomTokens) {
@@ -40,9 +40,9 @@ const SwitchModalContentWrapper = ({
   chainId,
   setSelectedChainId,
 }: SwitchModalContentWrapperProps) => {
-  const filteredTokens = getFilteredTokens(chainId);
+  const realChainId = useRootStore((store) => store.currentChainId);
+  const filteredTokens = getFilteredTokens(chainId, realChainId, TOKEN_LIST);
   const baseTokenList = useTokensBalance(filteredTokens, user);
-
   const { defaultInputToken, defaultOutputToken } = useMemo(() => {
     if (baseTokenList) {
       const defaultInputToken = baseTokenList[0];

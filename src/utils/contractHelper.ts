@@ -8,7 +8,7 @@ import {
 } from 'viem';
 import { viemClients } from './viem';
 import { LINEACHAINID } from '@/ui-config/TokenList';
-import FACTORY from '@/abis/IUniswapV2Factory.json';
+import { IUNISWAP_V2_FACTORY_ABI } from '@/abis/IUniswapV2Factory';
 
 export const getContract = <
   TAbi extends Abi | readonly unknown[],
@@ -40,5 +40,5 @@ export const getContract = <
 };
 
 export const getFactoryContract = (address: Address, signer?: WalletClient) => {
-  return getContract({ abi: FACTORY.abi, address, signer });
+  return getContract({ abi: IUNISWAP_V2_FACTORY_ABI, address, signer });
 };

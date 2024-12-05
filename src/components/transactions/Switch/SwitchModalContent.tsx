@@ -1,5 +1,8 @@
 import { TokenInfoWithBalance } from '@/hooks/generic/useTokenBalance';
 import React from 'react';
+import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { useIsWrongNetwork } from '@/hooks/useIsWrongNetwork';
+import { useChainId } from 'wagmi';
 
 interface SwitchModalContentProps {
   selectedChainId: number;
@@ -16,7 +19,13 @@ const SwitchModalContent = ({
   defaultOutputToken,
   tokens,
 }: SwitchModalContentProps) => {
-  return <div>SwitchModalContent</div>;
+  const isWrongNetwork = useIsWrongNetwork(selectedChainId);
+  return (
+    <>
+      <TxModalTitle title="Switch tokens" />
+      {isWrongNetwork.isWrongNetwork && "错了"}
+    </>
+  );
 };
 
 export default SwitchModalContent;
