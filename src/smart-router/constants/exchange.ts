@@ -1,7 +1,7 @@
-import { CHAINIDLIST } from "./chainIdList";
+import { ChainId } from "./chainIdList";
 
 
 
 export const SMART_ROUTER_ADDRESS = {
-  [CHAINIDLIST.LINEA_TESTNET]: '0xbe8F7E167c0131A54633Ae1C9E5c1Aa4286E8aE5'
+  [ChainId.linea_testnet]: '0xbe8F7E167c0131A54633Ae1C9E5c1Aa4286E8aE5'
 }

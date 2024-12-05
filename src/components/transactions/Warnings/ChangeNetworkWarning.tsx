@@ -1,5 +1,5 @@
 import { Warning } from '@/components/primitives/Warining';
-import { CHAINIDLIST } from '@/smart-router/constants/chainIdList';
+import { ChainId } from '@/smart-router/constants/chainIdList';
 import { AlertProps, Button, Typography } from '@mui/material';
 import { useChainModal } from '@rainbow-me/rainbowkit';
 import React from 'react';
@@ -7,7 +7,7 @@ import React from 'react';
 export type ChangeNetworkWarningProps = AlertProps & {
   funnel?: string;
   networkName: string;
-  chainId: CHAINIDLIST;
+  chainId: ChainId;
 };
 const ChangeNetworkWarning = ({
   networkName,

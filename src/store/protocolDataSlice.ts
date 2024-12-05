@@ -1,6 +1,7 @@
 import { StateCreator } from "zustand";
 import { RootStore } from "./root";
-import { CHAINIDLIST } from "@/smart-router/constants/chainIdList";
+import { ChainId } from "@/smart-router/constants/chainIdList";
+import { TMPNETWORK } from "@/ui-config/TokenList";
 
 export interface ProtocolDataSlice {
   currentChainId: number;
@@ -14,6 +15,6 @@ export const createProtocolDataSlice: StateCreator<
   ProtocolDataSlice
 > = (set, get) => {
   return {
-    currentChainId: CHAINIDLIST.LINEA_TESTNET, // TODO: 后续根据不同部署网络 动态切换这里值
+    currentChainId: TMPNETWORK, // TODO: 后续根据不同部署网络 动态切换这里值
   }
 }

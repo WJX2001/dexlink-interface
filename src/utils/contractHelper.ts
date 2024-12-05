@@ -8,7 +8,8 @@ import {
 } from 'viem';
 import { viemClients } from './viem';
 import { IUNISWAP_V2_FACTORY_ABI } from '@/abis/IUniswapV2Factory';
-import { CHAINIDLIST } from '@/smart-router/constants/chainIdList';
+import { ChainId } from '@/smart-router/constants/chainIdList';
+import { TMPNETWORK } from '@/ui-config/TokenList';
 
 export const getContract = <
   TAbi extends Abi | readonly unknown[],
@@ -16,7 +17,7 @@ export const getContract = <
 >({
   abi,
   address,
-  chainId = CHAINIDLIST.LINEA_TESTNET,
+  chainId = TMPNETWORK,
   signer,
 }: {
   abi: TAbi | readonly unknown[];

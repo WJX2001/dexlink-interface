@@ -894,6 +894,11 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
+"@bgd-labs/aave-address-book@4.2":
+  version "4.2.1"
+  resolved "https://registry.npmmirror.com/@bgd-labs/aave-address-book/-/aave-address-book-4.2.1.tgz#7a680955f72fbb238f7847f829bd64111f185552"
+  integrity sha512-HSdoflSXam3rnkFpLiXAavsmzBgHBbs8GQ4pVweFJvzMZbHxy1mRc7c6Tbt8boA72AY4myZHP44lgKAcrg2Zyw==
+
 "@coinbase/wallet-sdk@4.2.3":
   version "4.2.3"
   resolved "https://registry.npmmirror.com/@coinbase/wallet-sdk/-/wallet-sdk-4.2.3.tgz#a30fa0605b24bc42c37f52a62d2442bcbb7734af"

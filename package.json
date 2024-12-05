@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@bgd-labs/aave-address-book": "4.2",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "@heroicons/react": "v1",
