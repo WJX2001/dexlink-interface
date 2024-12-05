@@ -83,11 +83,12 @@ const SwitchModalContentWrapper = ({
 
 export const SwitchModal = () => {
   const { type, close } = useModalContext();
-  const { address: user, chainId: connectedChainId } = useAccount();
+  const { chainId: connectedChainId } = useWeb3Context();
   const { openConnectModal } = useConnectModal();
+  // 这个是根据当前部署的网络来决定的 部署在哪个网络就用哪个
   const currentChainId = useRootStore((store) => store.currentChainId);
   const [selectedChainId, setSelectedChainId] = useState<number>();
-
+  const user = useRootStore((store) => store.account);
   /**
    * TODO: 后续根据supportNetworksWithEnabledMarket 进行chainId的配置
    * 这里先临时处理下，暂时只取当前的chainId

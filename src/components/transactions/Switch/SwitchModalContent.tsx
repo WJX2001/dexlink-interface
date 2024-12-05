@@ -3,6 +3,8 @@ import React from 'react';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { useIsWrongNetwork } from '@/hooks/useIsWrongNetwork';
 import { useChainId } from 'wagmi';
+import ChangeNetworkWarning from '../Warnings/ChangeNetworkWarning';
+import { CHAINIDLIST } from '@/smart-router/constants/chainIdList';
 
 interface SwitchModalContentProps {
   selectedChainId: number;
@@ -23,7 +25,12 @@ const SwitchModalContent = ({
   return (
     <>
       <TxModalTitle title="Switch tokens" />
-      {isWrongNetwork.isWrongNetwork && "错了"}
+      {isWrongNetwork.isWrongNetwork && (
+        <ChangeNetworkWarning
+          networkName={CHAINIDLIST[CHAINIDLIST.LINEA_TESTNET]} // TODO:  这里临时处理下 后续需要修改
+          chainId={selectedChainId}
+        />
+      )}
     </>
   );
 };
