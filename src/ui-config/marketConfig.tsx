@@ -106,6 +106,7 @@ export enum CustomMarket {
   // permissioned_market = 'permissioned_market',
 }
 
+const apiKey = process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY;
 
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;

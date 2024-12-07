@@ -5,13 +5,15 @@ import {
 } from '@/hooks/generic/useTokenBalance';
 import { ModalType, useModalContext } from '@/hooks/useModal';
 import { useRootStore } from '@/store/root';
-import { TOKEN_LIST, TokenList } from '@/ui-config/TokenList';
+import { TMPNETWORK, TOKEN_LIST, TokenList } from '@/ui-config/TokenList';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from 'wagmi';
 import SwitchModalContent from './SwitchModalContent';
 import { useWeb3Context } from '@/lib/hooks/useWeb3Context';
+import { supportedNetworksWithEnabledMarket } from './common';
+import { ChainId } from '@/smart-router/constants/chainIdList';
 
 interface SwitchModalContentWrapperProps {
   user: string;
@@ -82,12 +84,25 @@ const SwitchModalContentWrapper = ({
 };
 
 export const SwitchModal = () => {
-  const { type, close } = useModalContext();
+  const {
+    type,
+    close,
+    args: { chainId },
+  } = useModalContext();
   const { chainId: connectedChainId } = useWeb3Context();
   const { openConnectModal } = useConnectModal();
   // 这个是根据当前部署的网络来决定的 部署在哪个网络就用哪个
   const currentChainId = useRootStore((store) => store.currentChainId);
-  const [selectedChainId, setSelectedChainId] = useState<number>();
+  const [selectedChainId, setSelectedChainId] = useState<number>(() => {
+    if (
+      supportedNetworksWithEnabledMarket.find(
+        (elem) => elem.chainId === currentChainId,
+      )
+    )
+      return currentChainId;
+    // return defaultNetwork.chainId;
+    return TMPNETWORK;
+  });
   const user = useRootStore((store) => store.account);
   /**
    * TODO: 后续根据supportNetworksWithEnabledMarket 进行chainId的配置
@@ -95,8 +110,37 @@ export const SwitchModal = () => {
    */
 
   useEffect(() => {
-    setSelectedChainId(connectedChainId);
-  }, [connectedChainId]);
+    if (
+      chainId &&
+      supportedNetworksWithEnabledMarket.find(
+        (elem) => elem.chainId === chainId,
+      )
+    ) {
+      setSelectedChainId(chainId);
+    } else if (
+      connectedChainId &&
+      supportedNetworksWithEnabledMarket.find(
+        (elem) => elem.chainId === connectedChainId,
+      )
+    ) {
+      const supportedFork = supportedNetworksWithEnabledMarket.find(
+        (elem) => elem.underlyingChainId === connectedChainId,
+      );
+      setSelectedChainId(
+        supportedFork ? supportedFork.chainId : connectedChainId,
+      );
+    } else if (
+      supportedNetworksWithEnabledMarket.find(
+        (elem) => elem.chainId === currentChainId,
+      )
+    ) {
+      setSelectedChainId(currentChainId);
+    } else {
+      // setSelectedChainId(defaultNetwork.chainId);
+      // 临时这么处理一下 后续不能如此操作
+      setSelectedChainId(connectedChainId);
+    }
+  }, [connectedChainId, chainId, connectedChainId]);
 
   return (
     <BasicModal open={type === ModalType.Switch} setOpen={close}>
