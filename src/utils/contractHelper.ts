@@ -6,10 +6,10 @@ import {
   WalletClient,
   getContract as viemGetContract,
 } from 'viem';
-import { viemClients } from './viem';
+
 import { IUNISWAP_V2_FACTORY_ABI } from '@/abis/IUniswapV2Factory';
-import { ChainId } from '@/smart-router/constants/chainIdList';
 import { TMPNETWORK } from '@/ui-config/TokenList';
+import { viemClients } from '@/config/viem';
 
 export const getContract = <
   TAbi extends Abi | readonly unknown[],
