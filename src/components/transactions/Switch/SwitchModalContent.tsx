@@ -5,7 +5,7 @@ import { useIsWrongNetwork } from '@/hooks/useIsWrongNetwork';
 import { useChainId } from 'wagmi';
 import ChangeNetworkWarning from '../Warnings/ChangeNetworkWarning';
 import { TMPNETWORK } from '@/ui-config/TokenList';
-import { ChainId } from '@aave/contract-helpers';
+import { ChainId } from '@/smart-router/constants/chainIdList';
 interface SwitchModalContentProps {
   selectedChainId: number;
   setSelectedChainId: (value: number) => void;

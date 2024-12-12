@@ -33,62 +33,62 @@ export const TMPNETWORK = ChainId.fuji
 export const TOKEN_LIST: TokenList = {
   name: 'Labs Default',
   tokens: [
-    // {
-    //   name: 'Tether USD',
-    //   symbol: 'USDT',
-    //   address: '0x7898AcCC83587C3C55116c5230C17a6Cd9C71bad',
-    //   decimals: 18,
-    //   chainId: TMPNETWORK,
-    //   logoURI:
-    //     'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
-    // },
+    {
+      name: 'Tether USD',
+      symbol: 'USDT',
+      address: '0xAbB3DC2816daD829D53C700C42113d2E014b32e2',
+      decimals: 18,
+      chainId: TMPNETWORK,
+      logoURI:
+        'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+    },
     {
       name: 'Dai',
       symbol: 'DAI',
-      address: '0xA7daff9c2c23384E8846a66Ac9f932447137C40A',
+      address: '0x095Ee44c0b62FEAF7A1B6096a1B6Fe4B0bbF28E0',
       decimals: 18,
       chainId: TMPNETWORK,
       logoURI:
         'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
     },
-    // {
-    //   name: 'Ethereum',
-    //   symbol: 'ETH',
-    //   address: '0x10253594A832f967994b44f33411940533302ACb', // Weth address is fetched from the router
-    //   decimals: 18,
-    //   chainId: TMPNETWORK,
-    //   logoURI:
-    //     'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
-    //   extensions: {
-    //     isNative: true,
-    //   },
-    // },
-    // {
-    //   name: 'Gold',
-    //   symbol: 'GLD',
-    //   address: '0x8a30F2D0b38a70b7aD3A9A1Cf1010537B6129e43',
-    //   decimals: 18,
-    //   chainId: TMPNETWORK,
-    //   logoURI:
-    //     'https://assets.coingecko.com/coins/images/9519/thumb/paxg.PNG?1568542565',
-    // },
-    // {
-    //   name: 'Pearl',
-    //   symbol: 'PEARL',
-    //   address: '0xe411e046b42760FA917401d0B83EAb48197e452B',
-    //   decimals: 18,
-    //   chainId: TMPNETWORK,
-    //   logoURI:
-    //     'https://assets.coingecko.com/coins/images/30799/large/Yp9H3agr_400x400.jpg?1696529660',
-    // },
-    // {
-    //   name: 'Link',
-    //   symbol: 'LINK',
-    //   address: '0xc55ECc3c35cc30c650b6b67E3DA9A9c3BF3c5046',
-    //   decimals: 18,
-    //   chainId: TMPNETWORK,
-    //   logoURI:
-    //     'https://assets.coingecko.com/coins/images/12738/thumb/AlphaToken_256x256.png?1617160876',
-    // },
+    {
+      name: 'Ethereum',
+      symbol: 'ETH',
+      address: '0xc156D16E6D3025d3c6df16AcbE75C94975096D98', // Weth address is fetched from the router
+      decimals: 18,
+      chainId: TMPNETWORK,
+      logoURI:
+        'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+      extensions: {
+        isNative: true,
+      },
+    },
+    {
+      name: 'Gold',
+      symbol: 'GLD',
+      address: '0x35c72D6A66B2C8e15d97a3561D24Aa0155bD5b35',
+      decimals: 18,
+      chainId: TMPNETWORK,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/9519/thumb/paxg.PNG?1568542565',
+    },
+    {
+      name: 'Pearl',
+      symbol: 'PEARL',
+      address: '0xAc7B5DdC47D23ad480765120d17bF426B858F22a',
+      decimals: 18,
+      chainId: TMPNETWORK,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/30799/large/Yp9H3agr_400x400.jpg?1696529660',
+    },
+    {
+      name: 'Link',
+      symbol: 'LINK',
+      address: '0x5701AaF1a3FA52fFF6bDb607D5d58173A8841c00',
+      decimals: 18,
+      chainId: TMPNETWORK,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12738/thumb/AlphaToken_256x256.png?1617160876',
+    },
   ],
 };

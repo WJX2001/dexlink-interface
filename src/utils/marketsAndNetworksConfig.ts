@@ -1,4 +1,4 @@
-import { ChainId } from '@/smart-router/constants/chainIdList';
+import { ChainId, ChainIdToNetwork } from '@/smart-router/constants/chainIdList';
 import {
   MarketDataType,
   CustomMarket,
@@ -11,7 +11,7 @@ import {
   ExplorerLinkBuilderProps,
   NetworkConfig,
 } from '@/ui-config/networksConfig';
-import { ChainIdToNetwork } from '@aave/contract-helpers';
+
 
 export const STAGING_ENV = process.env.NEXT_PUBLIC_ENV === 'staging';
 

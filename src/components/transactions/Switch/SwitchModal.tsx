@@ -48,6 +48,7 @@ const SwitchModalContentWrapper = ({
   setSelectedChainId,
 }: SwitchModalContentWrapperProps) => {
   const filteredTokens = useMemo(() => getFilteredTokens(chainId), [chainId]);
+  // obtain the tokenlist with balance
   const baseTokenList = useTokensBalance(filteredTokens, user);
   const { defaultInputToken, defaultOutputToken } = useMemo(() => {
     if (baseTokenList) {
@@ -89,8 +90,10 @@ const SwitchModalContentWrapper = ({
       </Box>
     );
   }
+  console.log(supportedNetworksWithEnabledMarket,'876')
   return (
     <SwitchModalContent
+      key={chainId}
       selectedChainId={chainId}
       setSelectedChainId={setSelectedChainId}
       defaultInputToken={defaultInputToken}
