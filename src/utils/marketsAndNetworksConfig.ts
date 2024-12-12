@@ -1,3 +1,4 @@
+import { ChainId } from '@/smart-router/constants/chainIdList';
 import {
   MarketDataType,
   CustomMarket,
@@ -6,15 +7,20 @@ import {
 import {
   networkConfigs as _networkConfigs,
   BaseNetworkConfig,
+  ExplorerLinkBuilderConfig,
+  ExplorerLinkBuilderProps,
+  NetworkConfig,
 } from '@/ui-config/networksConfig';
+import { ChainIdToNetwork } from '@aave/contract-helpers';
 
 export const STAGING_ENV = process.env.NEXT_PUBLIC_ENV === 'staging';
 
-export const PROD_ENV = !process.env.NEXT_PUBLIC_ENV || process.env.NEXT_PUBLIC_ENV === 'prod';
+export const PROD_ENV =
+  !process.env.NEXT_PUBLIC_ENV || process.env.NEXT_PUBLIC_ENV === 'prod';
 
 export const ENABLE_TESTNET =
-  PROD_ENV && global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
-
+  PROD_ENV &&
+  global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
 
 // determines if forks should be shown
 export const FORK_ENABLED =
@@ -101,4 +107,30 @@ export function getSupportedChainIds(): number[] {
         new Set<number>(),
       ),
   );
+}
+
+const linkBuilder =
+  ({ baseUrl, addressPrefix = 'address', txPrefix = 'tx' }: ExplorerLinkBuilderConfig) =>
+  ({ tx, address }: ExplorerLinkBuilderProps): string => {
+    if (tx) {
+      return `${baseUrl}/${txPrefix}/${tx}`;
+    }
+    if (address) {
+      return `${baseUrl}/${addressPrefix}/${address}`;
+    }
+    return baseUrl;
+  };
+
+export function getNetworkConfig(chainId: ChainId): NetworkConfig {
+  const config = networkConfigs[chainId];
+  if (!config) {
+    const name = ChainIdToNetwork[chainId];
+    return {
+      name: name || `unknown chainId: ${chainId}`,
+    } as unknown as NetworkConfig;
+  }
+  return {
+    ...config,
+    explorerLinkBuilder: linkBuilder({ baseUrl: config.explorerLink }),
+  }
 }

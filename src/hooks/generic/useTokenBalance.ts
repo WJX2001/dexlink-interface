@@ -23,6 +23,8 @@ export const useTokensBalance = (
     };
   });
 
+  console.log(contracts,'234')
+
   const { data: results } = useReadContracts({
     // @ts-ignore
     contracts: contracts,

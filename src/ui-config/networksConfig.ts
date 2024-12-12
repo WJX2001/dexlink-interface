@@ -5,6 +5,12 @@ export type ExplorerLinkBuilderProps = {
   address?: string;
 };
 
+export type ExplorerLinkBuilderConfig = {
+  baseUrl: string;
+  addressPrefix?: string;
+  txPrefix?: string;
+};
+
 export type NetworkConfig = {
   name: string;
   displayName?: string;

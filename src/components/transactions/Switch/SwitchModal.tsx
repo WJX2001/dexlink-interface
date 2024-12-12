@@ -1,4 +1,5 @@
 import BasicModal from '@/components/primitives/BasicModal';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import {
   TokenInfoWithBalance,
   useTokensBalance,
@@ -13,7 +14,10 @@ import { useAccount } from 'wagmi';
 import SwitchModalContent from './SwitchModalContent';
 import { useWeb3Context } from '@/lib/hooks/useWeb3Context';
 import { supportedNetworksWithEnabledMarket } from './common';
-import { ChainId } from '@/smart-router/constants/chainIdList';
+import { CustomMarket, marketsData } from '@/ui-config/marketConfig';
+import { getNetworkConfig } from '@/utils/marketsAndNetworksConfig';
+import invariant from 'tiny-invariant';
+const defaultNetwork = marketsData[CustomMarket.proto_fuji];
 
 interface SwitchModalContentWrapperProps {
   user: string;
@@ -23,10 +27,10 @@ interface SwitchModalContentWrapperProps {
 
 const getFilteredTokens = (
   chainId: number,
-  realChainId: number,
-  tokenList: TokenList,
+  // realChainId: number,
+  // tokenList: TokenList,
 ): TokenInfoWithBalance[] => {
-  let customTokenList = tokenList.tokens;
+  let customTokenList = TOKEN_LIST.tokens;
   const savedCustomTokens = localStorage.getItem('customTokens');
   if (savedCustomTokens) {
     customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));
@@ -34,6 +38,7 @@ const getFilteredTokens = (
   const transformedTokens = customTokenList.map((token) => {
     return { ...token, balance: '0' };
   });
+  const realChainId = getNetworkConfig(chainId).underlyingChainId ?? chainId;
   return transformedTokens.filter((token) => token.chainId === realChainId);
 };
 
@@ -42,15 +47,27 @@ const SwitchModalContentWrapper = ({
   chainId,
   setSelectedChainId,
 }: SwitchModalContentWrapperProps) => {
-  const realChainId = useRootStore((store) => store.currentChainId);
-  const filteredTokens = getFilteredTokens(chainId, realChainId, TOKEN_LIST);
+  const filteredTokens = useMemo(() => getFilteredTokens(chainId), [chainId]);
   const baseTokenList = useTokensBalance(filteredTokens, user);
   const { defaultInputToken, defaultOutputToken } = useMemo(() => {
     if (baseTokenList) {
-      const defaultInputToken = baseTokenList[0];
-      const defaultOutputToken = baseTokenList.find(
-        (token) => token.address !== defaultInputToken.address,
-      ) as TokenInfoWithBalance;
+      const defaultInputToken =
+        baseTokenList.find((token) => token.extensions?.isNative) ||
+        baseTokenList[0];
+      const defaultOutputToken =
+        baseTokenList.find(
+          (token) =>
+            (token.address === AaveV3Ethereum.ASSETS.GHO.UNDERLYING ||
+              token.symbol == 'AAVE') &&
+            token.address !== defaultInputToken.address,
+        ) ||
+        baseTokenList.find(
+          (token) => token.address !== defaultInputToken.address,
+        );
+      invariant(
+        defaultInputToken && defaultOutputToken,
+        'token list should have at least 2 assets',
+      );
       return { defaultInputToken, defaultOutputToken };
     }
     return {
@@ -89,10 +106,12 @@ export const SwitchModal = () => {
     close,
     args: { chainId },
   } = useModalContext();
-  const { chainId: connectedChainId } = useWeb3Context();
-  const { openConnectModal } = useConnectModal();
   // 这个是根据当前部署的网络来决定的 部署在哪个网络就用哪个
   const currentChainId = useRootStore((store) => store.currentChainId);
+  const { chainId: connectedChainId } = useWeb3Context();
+  const user = useRootStore((store) => store.account);
+  // open connect wallet modal
+  const { openConnectModal } = useConnectModal();
   const [selectedChainId, setSelectedChainId] = useState<number>(() => {
     if (
       supportedNetworksWithEnabledMarket.find(
@@ -100,14 +119,9 @@ export const SwitchModal = () => {
       )
     )
       return currentChainId;
-    // return defaultNetwork.chainId;
-    return TMPNETWORK;
+    return defaultNetwork.chainId;
+    // return TMPNETWORK;
   });
-  const user = useRootStore((store) => store.account);
-  /**
-   * TODO: 后续根据supportNetworksWithEnabledMarket 进行chainId的配置
-   * 这里先临时处理下，暂时只取当前的chainId
-   */
 
   useEffect(() => {
     if (
@@ -136,9 +150,7 @@ export const SwitchModal = () => {
     ) {
       setSelectedChainId(currentChainId);
     } else {
-      // setSelectedChainId(defaultNetwork.chainId);
-      // 临时这么处理一下 后续不能如此操作
-      setSelectedChainId(connectedChainId);
+      setSelectedChainId(defaultNetwork.chainId);
     }
   }, [connectedChainId, chainId, connectedChainId]);
 
