@@ -90,12 +90,12 @@ const SwitchModalContentWrapper = ({
       </Box>
     );
   }
-  console.log(supportedNetworksWithEnabledMarket,'876')
   return (
     <SwitchModalContent
       key={chainId}
       selectedChainId={chainId}
       setSelectedChainId={setSelectedChainId}
+      supportedNetworks={supportedNetworksWithEnabledMarket}
       defaultInputToken={defaultInputToken}
       defaultOutputToken={defaultOutputToken}
       tokens={baseTokenList}

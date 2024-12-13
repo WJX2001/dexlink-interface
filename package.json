@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aave/math-utils": "^1.30.5",
     "@bgd-labs/aave-address-book": "4.2",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
@@ -21,6 +22,7 @@
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.62.0",
     "@types/lodash.merge": "^4.6.9",
+    "bignumber.js": "^9.1.2",
     "lodash.merge": "^4.6.2",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
