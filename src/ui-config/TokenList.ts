@@ -36,7 +36,7 @@ export const TOKEN_LIST: TokenList = {
     {
       name: 'Tether USD',
       symbol: 'USDT',
-      address: '0xAbB3DC2816daD829D53C700C42113d2E014b32e2',
+      address: '0x02823f9B469960Bb3b1de0B3746D4b95B7E35543',
       decimals: 18,
       chainId: TMPNETWORK,
       logoURI:
@@ -92,3 +92,17 @@ export const TOKEN_LIST: TokenList = {
     },
   ],
 };
+
+
+export const COMMON_SWAPS = [
+  'ETH',
+  'DAI',
+  'USDC',
+  'USDT',
+  'WBTC',
+  'WETH',
+  'DAI.e',
+  'USDC.e',
+  'USDT.e',
+  'GHO',
+];

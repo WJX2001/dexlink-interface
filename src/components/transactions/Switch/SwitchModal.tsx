@@ -76,6 +76,8 @@ const SwitchModalContentWrapper = ({
       defaultOutputToken: filteredTokens[1],
     };
   }, [baseTokenList, filteredTokens]);
+
+  
   if (!baseTokenList) {
     return (
       <Box

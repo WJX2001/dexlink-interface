@@ -1,3 +1,4 @@
+import { TxErrorType } from '@/ui-config/errorMapping';
 import { createContext, useContext, useState } from 'react';
 
 export interface ModalArgsType {
@@ -14,6 +15,8 @@ export interface ModalContextType<T extends ModalArgsType> {
   close: () => void;
   args: T;
   type?: ModalType;
+  txError: TxErrorType | undefined;
+  setTxError: (error: TxErrorType | undefined) => void;
 }
 
 interface ModalContextProviderProps {
@@ -31,6 +34,7 @@ export const ModalContextProvider: React.FC<ModalContextProviderProps> = ({
 }) => {
   const [args, setArgs] = useState<ModalArgsType>({});
   const [type, setType] = useState<ModalType>();
+  const [txError, setTxError] = useState<TxErrorType>();
   return (
     <ModalContext.Provider
       value={{
@@ -41,9 +45,12 @@ export const ModalContextProvider: React.FC<ModalContextProviderProps> = ({
         close: () => {
           setType(undefined);
           setArgs({});
+          setTxError(undefined);
         },
         args,
         type,
+        txError,
+        setTxError
       }}
     >
       {children}

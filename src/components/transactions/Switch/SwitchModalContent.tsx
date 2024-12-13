@@ -8,8 +8,10 @@ import { TMPNETWORK } from '@/ui-config/TokenList';
 import { ChainId } from '@/smart-router/constants/chainIdList';
 import { SupportedNetworkWithChainId } from './common';
 import { getNetworkConfig } from '@/utils/marketsAndNetworksConfig';
-import { Box } from '@mui/material';
+import { Box, CircularProgress, IconButton, SvgIcon } from '@mui/material';
 import { SwitchSlippageSelector } from './SwitchSlippageSelector';
+import SwitchAssetInput from './SwitchAssetInput';
+import { SwitchVerticalIcon } from '@heroicons/react/outline';
 
 interface SwitchModalContentProps {
   selectedChainId: number;
@@ -70,10 +72,57 @@ const SwitchModalContent = ({
   defaultOutputToken,
   tokens,
 }: SwitchModalContentProps) => {
+  console.log(tokens, 'tokens');
+  console.log(defaultOutputToken, 'defaultOutputToken');
   const [slippage, setSlippage] = useState<string>('0.10');
+  const [inputAmount, setInputAmount] = useState('');
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const slippageValidation = validateSlippage(slippage);
+
+  const [selectedInputToken, setSelectedInputToken] =
+    useState(defaultInputToken);
+  const [selectedOutputToken, setSelectedOutputToken] =
+    useState(defaultOutputToken);
+
+  const handleInputChange = (value: string) => {
+    // setTxError(undefined);
+    if (value === '-1') {
+      setInputAmount(selectedInputToken.balance);
+      // debouncedInputChange(selectedInputToken.balance);
+    } else {
+      setInputAmount(value);
+      // debouncedInputChange(value);
+    }
+  };
+
+  const handleSelectedInputToken = (token: TokenInfoWithBalance) => {
+    if (!tokens.find((t) => t.address === token.address)) {
+      // TODO: 后续需要补充自定义添加token的功能
+      // addNewToken(token).then(() => {
+      //   setSelectedInputToken(token);
+      //   setTxError(undefined);
+      // });
+      setSelectedInputToken(token);
+    } else {
+      setSelectedInputToken(token);
+      // setTxError(undefined);
+    }
+  };
+
+  const handleSelectedOutputToken = (token: TokenInfoWithBalance) => {
+    if (!tokens.find((t) => t.address === token.address)) {
+      // addNewToken(token).then(() => {
+      //   setSelectedOutputToken(token);
+      //   setTxError(undefined);
+      // });
+      setSelectedOutputToken(token);
+    } else {
+      setSelectedOutputToken(token);
+      // setTxError(undefined);
+    }
+  };
+
   return (
     <>
       <TxModalTitle title="Switch tokens" />
@@ -88,6 +137,7 @@ const SwitchModalContent = ({
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'row-reverse',
+          height: '33px',
         }}
       >
         <SwitchSlippageSelector
@@ -96,6 +146,72 @@ const SwitchModalContent = ({
           setSlippage={setSlippage}
         />
       </Box>
+      {!selectedInputToken || !selectedOutputToken ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '15px',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+            }}
+          >
+            <SwitchAssetInput
+              chainId={selectedChainId}
+              assets={tokens.filter(
+                (token) => token.address !== selectedOutputToken.address,
+              )}
+              value={inputAmount}
+              onChange={handleInputChange}
+              usdValue={'0'}
+              onSelect={handleSelectedInputToken}
+              selectedAsset={selectedInputToken}
+            />
+            <IconButton
+              // onClick={onSwitchReserves}
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                position: 'absolute',
+                backgroundColor: 'background.paper',
+                '&:hover': { backgroundColor: 'background.surface' },
+              }}
+            >
+              <SvgIcon
+                sx={{
+                  color: 'primary.main',
+                  fontSize: '18px',
+                }}
+              >
+                <SwitchVerticalIcon />
+              </SvgIcon>
+            </IconButton>
+            <SwitchAssetInput
+              chainId={selectedChainId}
+              assets={tokens.filter(
+                (token) => token.address !== selectedInputToken.address,
+              )}
+              value={
+                '0'
+              }
+              usdValue={'0'}
+              // loading={
+              //   debounceInputAmount !== '0' &&
+              //   debounceInputAmount !== '' &&
+              //   ratesLoading &&
+              //   !ratesError
+              // }
+              onSelect={handleSelectedOutputToken}
+              disableInput={true}
+              selectedAsset={selectedOutputToken}
+            />
+          </Box>
+        </>
+      )}
     </>
   );
 };
