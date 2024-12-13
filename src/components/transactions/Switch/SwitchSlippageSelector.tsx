@@ -1,8 +1,8 @@
-import React, { MouseEvent, useState } from 'react';
-import { ValidationData } from './SwitchModalContent';
+import { CogIcon } from '@heroicons/react/solid';
 import {
   Box,
   Button,
+  InputAdornment,
   InputBase,
   Menu,
   SvgIcon,
@@ -10,9 +10,15 @@ import {
   ToggleButtonGroup,
   Typography,
 } from '@mui/material';
-import { CogIcon } from '@heroicons/react/solid';
-import { FormattedNumber } from '@/components/primitives/FormattedNumber';
+import { MouseEvent, useState } from 'react';
 
+// import { Warning } from 'src/components/primitives/Warning';
+
+import { ValidationData } from './SwitchModalContent';
+import { FormattedNumber } from '@/components/primitives/FormattedNumber';
+import { Warning } from '@/components/primitives/Warining';
+
+const DEFAULT_SLIPPAGE_OPTIONS = ['0.10', '0.50', '1.00'];
 
 type SwitchSlippageSelectorProps = {
   slippage: string;
@@ -20,23 +26,29 @@ type SwitchSlippageSelectorProps = {
   slippageValidation?: ValidationData;
 };
 
-const DEFAULT_SLIPPAGE_OPTIONS = ['0.10', '0.50', '1.00'];
-
-const SwitchSlippageSelector = ({
+export const SwitchSlippageSelector = ({
   slippage,
   setSlippage,
   slippageValidation,
 }: SwitchSlippageSelectorProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
   const [isCustomSlippage, setIsCustomSlippage] = useState(false);
+
   const open = Boolean(anchorEl);
+
+  const handleOpen = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleOpen = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleCustomSlippageChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setSlippage(event.target.value);
+    setIsCustomSlippage(true);
   };
 
   const handlePresetSlippageChange = (value: string) => {
@@ -47,7 +59,7 @@ const SwitchSlippageSelector = ({
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
       <Typography variant="caption" color="text.secondary">
-        Slippage
+        <>Slippage</>
         <Menu
           sx={{
             maxWidth: '330px',
@@ -60,17 +72,17 @@ const SwitchSlippageSelector = ({
             vertical: 'top',
             horizontal: 'right',
           }}
+          anchorEl={anchorEl}
           id="switch-slippage-selector"
           MenuListProps={{
             'aria-labelledby': 'switch-slippage-selector-button',
             sx: { py: 3, px: 4 },
           }}
-          anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
         >
           <Typography variant="subheader2" mb={5}>
-            Max slippage
+            <>Max slippage</>
           </Typography>
           <Box
             sx={{
@@ -115,15 +127,58 @@ const SwitchSlippageSelector = ({
                 </ToggleButton>
               ))}
             </ToggleButtonGroup>
-            <InputBase type="percent"/>
+            <InputBase
+              type="percent"
+              value={isCustomSlippage ? slippage : ''}
+              onChange={handleCustomSlippageChange}
+              placeholder="Custom"
+              endAdornment={
+                <InputAdornment position="end">
+                  <Typography variant="caption" color="text.muted">
+                    %
+                  </Typography>
+                </InputAdornment>
+              }
+              sx={{
+                fontSize: '12px',
+                px: 2,
+                width: '120px',
+                border: 1,
+                borderWidth: '1px',
+                backgroundColor: 'background.surface',
+                borderColor: slippageValidation
+                  ? `${slippageValidation.severity}.main`
+                  : 'background.surface',
+                borderRadius: '4px',
+              }}
+            />
           </Box>
+          {slippageValidation && (
+            <Warning
+              sx={{ mb: 0, mt: 2 }}
+              severity={slippageValidation.severity}
+            >
+              {slippageValidation.message}
+            </Warning>
+          )}
         </Menu>
       </Typography>
+      <FormattedNumber
+        variant="caption"
+        color={
+          slippageValidation
+            ? `${slippageValidation.severity}.main`
+            : 'text.primary'
+        }
+        value={slippage}
+        visibleDecimals={2}
+        symbol="%"
+      />
       <Button
         id="switch-slippage-selector-button"
         sx={{ padding: 0, minWidth: 0 }}
-        aria-controls="switch-slippage-selector"
         onClick={handleOpen}
+        aria-controls="switch-slippage-selector"
       >
         <SvgIcon sx={{ fontSize: '16px' }}>
           <CogIcon />
@@ -132,5 +187,3 @@ const SwitchSlippageSelector = ({
     </Box>
   );
 };
-
-export default SwitchSlippageSelector;

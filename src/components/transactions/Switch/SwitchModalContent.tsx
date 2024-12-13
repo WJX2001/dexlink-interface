@@ -9,7 +9,8 @@ import { ChainId } from '@/smart-router/constants/chainIdList';
 import { SupportedNetworkWithChainId } from './common';
 import { getNetworkConfig } from '@/utils/marketsAndNetworksConfig';
 import { Box } from '@mui/material';
-import SwitchSlippageSelector from './SwitchSlippageSelector';
+import { SwitchSlippageSelector } from './SwitchSlippageSelector';
+
 interface SwitchModalContentProps {
   selectedChainId: number;
   setSelectedChainId: (value: number) => void;
