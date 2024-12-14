@@ -7,7 +7,7 @@ import {
 } from '@/hooks/generic/useTokenBalance';
 import { ModalType, useModalContext } from '@/hooks/useModal';
 import { useRootStore } from '@/store/root';
-import { TMPNETWORK, TOKEN_LIST, TokenList } from '@/ui-config/TokenList';
+import { TMPNETWORK, TOKEN_LIST, TokenInfo, TokenList } from '@/ui-config/TokenList';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
 import { useEffect, useMemo, useState } from 'react';
@@ -18,6 +18,8 @@ import { supportedNetworksWithEnabledMarket } from './common';
 import { CustomMarket, marketsData } from '@/ui-config/marketConfig';
 import { getNetworkConfig } from '@/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';
+import { useQueryClient } from '@tanstack/react-query';
+import { queryKeysFactory } from '@/ui-config/queries';
 const defaultNetwork = marketsData[CustomMarket.proto_fuji];
 
 interface SwitchModalContentWrapperProps {
@@ -26,11 +28,7 @@ interface SwitchModalContentWrapperProps {
   setSelectedChainId: (chainId: number) => void;
 }
 
-const getFilteredTokens = (
-  chainId: number,
-  // realChainId: number,
-  // tokenList: TokenList,
-): TokenInfoWithBalance[] => {
+const getFilteredTokens = (chainId: number): TokenInfoWithBalance[] => {
   let customTokenList = TOKEN_LIST.tokens;
   const savedCustomTokens = localStorage.getItem('customTokens');
   if (savedCustomTokens) {
@@ -49,9 +47,14 @@ const SwitchModalContentWrapper = ({
   setSelectedChainId,
 }: SwitchModalContentWrapperProps) => {
   const filteredTokens = useMemo(() => getFilteredTokens(chainId), [chainId]);
+  const queryClient = useQueryClient();
   // obtain the tokenlist with balance
-  // const baseTokenList = useTokensBalance(filteredTokens, user);
-  const { data: baseTokenList }  =  useTokensBalancePlus(filteredTokens, chainId, user);
+  const { data: baseTokenList } = useTokensBalancePlus(
+    filteredTokens,
+    chainId,
+    user,
+  );
+
   const { defaultInputToken, defaultOutputToken } = useMemo(() => {
     if (baseTokenList) {
       const defaultInputToken =
@@ -79,6 +82,38 @@ const SwitchModalContentWrapper = ({
     };
   }, [baseTokenList, filteredTokens]);
 
+  const addNewToken = async (token: TokenInfoWithBalance) => {
+    queryClient.setQueryData<TokenInfoWithBalance[]>(
+      queryKeysFactory.tokensBalance(filteredTokens, chainId, user),
+      (oldData) => {
+        if (oldData)
+          return [...oldData, token].sort(
+            (a, b) => Number(b.balance) - Number(a.balance),
+          );
+        return [token];
+      },
+    );
+    const customTokens = localStorage.getItem('customTokens');
+    const newTokenInfo = {
+      address: token.address,
+      symbol: token.symbol,
+      decimals: token.decimals,
+      chainId: token.chainId,
+      name: token.name,
+      logoURI: token.logoURI,
+      extensions: {
+        isUserCustom: true,
+      },
+    };
+    if (customTokens) {
+      const parsedCustomTokens: TokenInfo[] = JSON.parse(customTokens);
+      parsedCustomTokens.push(newTokenInfo);
+      localStorage.setItem('customTokens', JSON.stringify(parsedCustomTokens));
+    } else {
+      localStorage.setItem('customTokens', JSON.stringify([newTokenInfo]));
+    }
+  };
+
   if (!baseTokenList) {
     return (
       <Box
@@ -102,6 +137,7 @@ const SwitchModalContentWrapper = ({
       defaultInputToken={defaultInputToken}
       defaultOutputToken={defaultOutputToken}
       tokens={baseTokenList}
+      addNewToken={addNewToken}
     />
   );
 };

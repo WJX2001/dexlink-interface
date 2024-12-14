@@ -133,34 +133,6 @@ const SwitchAssetInput = ({
     if (matchingAssets.length === 0 && isAddress(value)) {
       setLoadingNewAsset(true);
       const erc20Contract = getErc20Contract(value);
-      // publicClient?.multicall({
-      //   contracts: [
-      //     {
-      //       address: value,
-      //       abi: ERC20_ABI,
-      //       functionName: 'decimals',
-      //     },
-      //     {
-      //       address: value,
-      //       abi: ERC20_ABI,
-      //       functionName: 'symbol',
-      //     },
-      //     {
-      //       address: value,
-      //       abi: ERC20_ABI,
-      //       functionName: 'name',
-      //     },
-      //     { 
-      //       address: value,
-      //       abi: ERC20_ABI,
-      //       functionName: 'balanceOf',
-      //       args: [userAddress as any],
-      //     }
-      //   ]
-      // }).then(([decimals, symbol, name, balance]) => {
-      //   console.log(decimals, symbol, name, balance,'poi')
-      // })
-      
       Promise.all([
         erc20Contract?.read?.decimals(),
         erc20Contract?.read?.symbol(),

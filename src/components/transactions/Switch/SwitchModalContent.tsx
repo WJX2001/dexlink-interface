@@ -21,6 +21,7 @@ interface SwitchModalContentProps {
   tokens: TokenInfoWithBalance[];
   defaultInputToken: TokenInfoWithBalance;
   defaultOutputToken: TokenInfoWithBalance;
+  addNewToken: (token: TokenInfoWithBalance) => Promise<void>;
 }
 
 enum ValidationSeverity {
@@ -72,6 +73,7 @@ const SwitchModalContent = ({
   defaultInputToken,
   defaultOutputToken,
   tokens,
+  addNewToken
 }: SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState<string>('0.10');
   const [inputAmount, setInputAmount] = useState('');
@@ -98,12 +100,10 @@ const SwitchModalContent = ({
   const handleSelectedInputToken = (token: TokenInfoWithBalance) => {
     if (!tokens.find((t) => t.address === token.address)) {
       // TODO: 后续需要补充自定义添加token的功能
-      // addNewToken(token).then(() => {
-      //   setSelectedInputToken(token);
-      //   setTxError(undefined);
-      // });
-      setSelectedInputToken(token);
-      setTxError(undefined);
+      addNewToken(token).then(() => {
+        setSelectedInputToken(token);
+        setTxError(undefined);
+      });
     } else {
       setSelectedInputToken(token);
       setTxError(undefined);
@@ -112,12 +112,10 @@ const SwitchModalContent = ({
 
   const handleSelectedOutputToken = (token: TokenInfoWithBalance) => {
     if (!tokens.find((t) => t.address === token.address)) {
-      // addNewToken(token).then(() => {
-      //   setSelectedOutputToken(token);
-      //   setTxError(undefined);
-      // });
-      setTxError(undefined);
-      setSelectedOutputToken(token);
+      addNewToken(token).then(() => {
+        setSelectedOutputToken(token);
+        setTxError(undefined);
+      });
     } else {
       setSelectedOutputToken(token);
       setTxError(undefined);
