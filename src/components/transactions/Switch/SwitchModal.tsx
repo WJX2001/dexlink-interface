@@ -2,16 +2,14 @@ import BasicModal from '@/components/primitives/BasicModal';
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import {
   TokenInfoWithBalance,
-  useTokensBalance,
   useTokensBalancePlus,
 } from '@/hooks/generic/useTokenBalance';
 import { ModalType, useModalContext } from '@/hooks/useModal';
 import { useRootStore } from '@/store/root';
-import { TMPNETWORK, TOKEN_LIST, TokenInfo, TokenList } from '@/ui-config/TokenList';
+import { TOKEN_LIST, TokenInfo } from '@/ui-config/TokenList';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
-import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useEffect, useMemo, useState } from 'react';
-import { useAccount } from 'wagmi';
 import SwitchModalContent from './SwitchModalContent';
 import { useWeb3Context } from '@/lib/hooks/useWeb3Context';
 import { supportedNetworksWithEnabledMarket } from './common';

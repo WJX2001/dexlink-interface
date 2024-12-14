@@ -55,7 +55,6 @@ export function useTokenByChainId(
     if (!chainId || !address) return undefined;
     if (isLoading) return null;
     if (data) {
-      console.log(data,'data11')
       return new ERC20Token(
         chainId,
         address,

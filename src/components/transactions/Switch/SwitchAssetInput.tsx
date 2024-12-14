@@ -115,7 +115,6 @@ const SwitchAssetInput = ({
   };
 
   const handleSelect = (asset: TokenInfoWithBalance) => {
-    console.log('345', asset);
     onSelect && onSelect(asset);
     onChange && onChange('');
     handleClose();

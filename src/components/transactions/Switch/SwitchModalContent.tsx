@@ -99,7 +99,6 @@ const SwitchModalContent = ({
 
   const handleSelectedInputToken = (token: TokenInfoWithBalance) => {
     if (!tokens.find((t) => t.address === token.address)) {
-      // TODO: 后续需要补充自定义添加token的功能
       addNewToken(token).then(() => {
         setSelectedInputToken(token);
         setTxError(undefined);
