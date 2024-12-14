@@ -93,7 +93,7 @@ const SwitchAssetInput = ({
   const popularAssets = assets.filter((asset) =>
     COMMON_SWAPS.includes(asset.symbol),
   );
-
+  // const { chainId } = useActiveChainId()
   const handleClick = () => {
     setAnchorEl(inputRef.current);
   };
@@ -104,7 +104,7 @@ const SwitchAssetInput = ({
   };
 
   const handleSelect = (asset: TokenInfoWithBalance) => {
-    console.log('345');
+    console.log('345',asset);
     onSelect && onSelect(asset);
     onChange && onChange('');
     handleClose();
@@ -119,9 +119,10 @@ const SwitchAssetInput = ({
         asset.address.toLowerCase() === searchQuery,
     );
     // TODO: 后续还需要添加 自定义token 功能
-    // if (matchingAssets.length === 0 && isAddress(value)) {
-    //   setLoadingNewAsset(true);
-    // }
+    if (matchingAssets.length === 0 && isAddress(value)) {
+      console.log(value)
+      setLoadingNewAsset(true);
+    }
     setFilteredAssets(matchingAssets);
   };
 

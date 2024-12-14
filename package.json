@@ -18,6 +18,7 @@
     "@mui/material": "^6.1.9",
     "@next/bundle-analyzer": "^15.0.3",
     "@pancakeswap/chains": "^0.4.6",
+    "@pancakeswap/sdk": "^5.8.10",
     "@rainbow-me/rainbowkit": "^2.2.0",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.62.0",

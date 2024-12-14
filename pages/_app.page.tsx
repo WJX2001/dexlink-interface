@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { WagmiProvider } from 'wagmi';
-import { config } from '../src/wagmi';
+import { config } from '../src/utils/wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { AppGlobalStyles } from '@/layouts/AppGlobalStyles';

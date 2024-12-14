@@ -12,6 +12,7 @@ import { Box, CircularProgress, IconButton, SvgIcon } from '@mui/material';
 import { SwitchSlippageSelector } from './SwitchSlippageSelector';
 import SwitchAssetInput from './SwitchAssetInput';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
+import { useModalContext } from '@/hooks/useModal';
 
 interface SwitchModalContentProps {
   selectedChainId: number;
@@ -79,14 +80,14 @@ const SwitchModalContent = ({
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const slippageValidation = validateSlippage(slippage);
-
+  const { txError, setTxError } = useModalContext();
   const [selectedInputToken, setSelectedInputToken] =
     useState(defaultInputToken);
   const [selectedOutputToken, setSelectedOutputToken] =
     useState(defaultOutputToken);
 
   const handleInputChange = (value: string) => {
-    // setTxError(undefined);
+    setTxError(undefined);
     if (value === '-1') {
       setInputAmount(selectedInputToken.balance);
       // debouncedInputChange(selectedInputToken.balance);
@@ -104,9 +105,10 @@ const SwitchModalContent = ({
       //   setTxError(undefined);
       // });
       setSelectedInputToken(token);
+      setTxError(undefined);
     } else {
       setSelectedInputToken(token);
-      // setTxError(undefined);
+      setTxError(undefined);
     }
   };
 
@@ -116,10 +118,11 @@ const SwitchModalContent = ({
       //   setSelectedOutputToken(token);
       //   setTxError(undefined);
       // });
+      setTxError(undefined);
       setSelectedOutputToken(token);
     } else {
       setSelectedOutputToken(token);
-      // setTxError(undefined);
+      setTxError(undefined);
     }
   };
 
@@ -195,9 +198,7 @@ const SwitchModalContent = ({
               assets={tokens.filter(
                 (token) => token.address !== selectedInputToken.address,
               )}
-              value={
-                '0'
-              }
+              value={'0'}
               usdValue={'0'}
               // loading={
               //   debounceInputAmount !== '0' &&
