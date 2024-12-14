@@ -3,19 +3,18 @@ import { isChainSupported } from '@/utils/wagmi';
 import { useDeferredValue, useMemo } from 'react';
 import { useAccount, useChainId } from 'wagmi';
 
-export function useLocalNetworkChain() {
-  const { chainId } = useAccount();
-  if (chainId && isChainSupported(chainId)) {
-    return chainId;
+export function useLocalNetworkChain(wagmiChainId: number | undefined) {
+  if (wagmiChainId && isChainSupported(wagmiChainId)) {
+    return wagmiChainId;
   }
 
   return undefined;
 }
 
 export const useActiveChainId = () => {
-  const localChainId = useLocalNetworkChain();
-  const realChainId = useRootStore((store) => store.currentChainId);
   const { chainId: wagmiChainId } = useAccount();
+  const localChainId = useLocalNetworkChain(wagmiChainId);
+  const realChainId = useRootStore((store) => store.currentChainId);
   const chainId = localChainId ?? wagmiChainId ?? undefined;
 
   const isNotMatched = useDeferredValue(

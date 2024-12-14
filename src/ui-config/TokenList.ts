@@ -72,15 +72,15 @@ export const TOKEN_LIST: TokenList = {
       logoURI:
         'https://assets.coingecko.com/coins/images/9519/thumb/paxg.PNG?1568542565',
     },
-    {
-      name: 'Pearl',
-      symbol: 'PEARL',
-      address: '0xAc7B5DdC47D23ad480765120d17bF426B858F22a',
-      decimals: 18,
-      chainId: TMPNETWORK,
-      logoURI:
-        'https://assets.coingecko.com/coins/images/30799/large/Yp9H3agr_400x400.jpg?1696529660',
-    },
+    // {
+    //   name: 'Pearl',
+    //   symbol: 'PEARL',
+    //   address: '0xAc7B5DdC47D23ad480765120d17bF426B858F22a',
+    //   decimals: 18,
+    //   chainId: TMPNETWORK,
+    //   logoURI:
+    //     'https://assets.coingecko.com/coins/images/30799/large/Yp9H3agr_400x400.jpg?1696529660',
+    // },
     {
       name: 'Link',
       symbol: 'LINK',

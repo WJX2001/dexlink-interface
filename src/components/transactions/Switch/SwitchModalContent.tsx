@@ -73,8 +73,6 @@ const SwitchModalContent = ({
   defaultOutputToken,
   tokens,
 }: SwitchModalContentProps) => {
-  console.log(tokens, 'tokens');
-  console.log(defaultOutputToken, 'defaultOutputToken');
   const [slippage, setSlippage] = useState<string>('0.10');
   const [inputAmount, setInputAmount] = useState('');
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);

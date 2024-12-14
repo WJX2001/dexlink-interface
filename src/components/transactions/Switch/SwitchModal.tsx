@@ -3,6 +3,7 @@ import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import {
   TokenInfoWithBalance,
   useTokensBalance,
+  useTokensBalancePlus,
 } from '@/hooks/generic/useTokenBalance';
 import { ModalType, useModalContext } from '@/hooks/useModal';
 import { useRootStore } from '@/store/root';
@@ -49,7 +50,8 @@ const SwitchModalContentWrapper = ({
 }: SwitchModalContentWrapperProps) => {
   const filteredTokens = useMemo(() => getFilteredTokens(chainId), [chainId]);
   // obtain the tokenlist with balance
-  const baseTokenList = useTokensBalance(filteredTokens, user);
+  // const baseTokenList = useTokensBalance(filteredTokens, user);
+  const { data: baseTokenList }  =  useTokensBalancePlus(filteredTokens, chainId, user);
   const { defaultInputToken, defaultOutputToken } = useMemo(() => {
     if (baseTokenList) {
       const defaultInputToken =
@@ -77,7 +79,6 @@ const SwitchModalContentWrapper = ({
     };
   }, [baseTokenList, filteredTokens]);
 
-  
   if (!baseTokenList) {
     return (
       <Box
@@ -122,10 +123,10 @@ export const SwitchModal = () => {
       supportedNetworksWithEnabledMarket.find(
         (elem) => elem.chainId === currentChainId,
       )
-    )
+    ) {
       return currentChainId;
+    }
     return defaultNetwork.chainId;
-    // return TMPNETWORK;
   });
 
   useEffect(() => {

@@ -10,6 +10,7 @@ import {
 import { IUNISWAP_V2_FACTORY_ABI } from '@/abis/IUniswapV2Factory';
 import { TMPNETWORK } from '@/ui-config/TokenList';
 import { viemClients } from '@/config/viem';
+import { ERC20_ABI } from '@/abis/Erc20';
 
 export const getContract = <
   TAbi extends Abi | readonly unknown[],
@@ -43,3 +44,7 @@ export const getContract = <
 export const getFactoryContract = (address: Address, signer?: WalletClient) => {
   return getContract({ abi: IUNISWAP_V2_FACTORY_ABI, address, signer });
 };
+
+export const getErc20Contract = (address: Address, signer?: WalletClient) => {
+  return getContract({ abi: ERC20_ABI, address, signer })
+}

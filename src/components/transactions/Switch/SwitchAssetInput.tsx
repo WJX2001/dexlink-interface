@@ -1,8 +1,11 @@
+import { ERC20_ABI } from '@/abis/Erc20';
 import { FormattedNumber } from '@/components/primitives/FormattedNumber';
 import { ExternalTokenIcon } from '@/components/primitives/TokenIcon';
 import { SearchInput } from '@/components/SearchInput';
 import { TokenInfoWithBalance } from '@/hooks/generic/useTokenBalance';
+import { useToken } from '@/hooks/Token';
 import { COMMON_SWAPS } from '@/ui-config/TokenList';
+import { getErc20Contract } from '@/utils/contractHelper';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -19,9 +22,10 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
-import { isAddress } from 'viem';
+import { formatUnits, isAddress } from 'viem';
+import { useAccount, usePublicClient } from 'wagmi';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -85,6 +89,7 @@ const SwitchAssetInput = ({
   selectedAsset,
 }: AssetInputProps) => {
   const theme = useTheme();
+  const { address: userAddress } = useAccount();
   const inputRef = useRef<HTMLDivElement>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [filteredAssets, setFilteredAssets] = useState(assets);
@@ -93,6 +98,7 @@ const SwitchAssetInput = ({
   const popularAssets = assets.filter((asset) =>
     COMMON_SWAPS.includes(asset.symbol),
   );
+
   // const { chainId } = useActiveChainId()
   const handleClick = () => {
     setAnchorEl(inputRef.current);
@@ -100,17 +106,22 @@ const SwitchAssetInput = ({
 
   const handleClose = () => {
     setAnchorEl(null);
-    // handleCleanSearch();
+    handleCleanSearch();
+  };
+
+  const handleCleanSearch = () => {
+    setFilteredAssets(assets);
+    setLoadingNewAsset(false);
   };
 
   const handleSelect = (asset: TokenInfoWithBalance) => {
-    console.log('345',asset);
+    console.log('345', asset);
     onSelect && onSelect(asset);
     onChange && onChange('');
     handleClose();
   };
 
-  const handleSearchAssetChange = (value: string) => {
+  const handleSearchAssetChange = async(value: string) => {
     const searchQuery = value.trim().toLowerCase();
     const matchingAssets = assets.filter(
       (asset) =>
@@ -120,10 +131,63 @@ const SwitchAssetInput = ({
     );
     // TODO: 后续还需要添加 自定义token 功能
     if (matchingAssets.length === 0 && isAddress(value)) {
-      console.log(value)
       setLoadingNewAsset(true);
+      const erc20Contract = getErc20Contract(value);
+      // publicClient?.multicall({
+      //   contracts: [
+      //     {
+      //       address: value,
+      //       abi: ERC20_ABI,
+      //       functionName: 'decimals',
+      //     },
+      //     {
+      //       address: value,
+      //       abi: ERC20_ABI,
+      //       functionName: 'symbol',
+      //     },
+      //     {
+      //       address: value,
+      //       abi: ERC20_ABI,
+      //       functionName: 'name',
+      //     },
+      //     { 
+      //       address: value,
+      //       abi: ERC20_ABI,
+      //       functionName: 'balanceOf',
+      //       args: [userAddress as any],
+      //     }
+      //   ]
+      // }).then(([decimals, symbol, name, balance]) => {
+      //   console.log(decimals, symbol, name, balance,'poi')
+      // })
+      
+      Promise.all([
+        erc20Contract?.read?.decimals(),
+        erc20Contract?.read?.symbol(),
+        erc20Contract?.read?.name(),
+        erc20Contract?.read?.balanceOf([userAddress as any]),
+      ])
+        .then(([decimals, symbol, name, balance]) => {
+          const tokenInfo = {
+            chainId: chainId,
+            balance: formatUnits(balance, decimals),
+            extensions: {
+              isUserCustom: true,
+            },
+            symbol,
+            name,
+            decimals,
+            address: value,
+          };
+          setFilteredAssets([tokenInfo]);
+        })
+        .catch((e) => {
+          setFilteredAssets([]);
+        })
+        .finally(() => setLoadingNewAsset(false));
+    } else {
+      setFilteredAssets(matchingAssets);
     }
-    setFilteredAssets(matchingAssets);
   };
 
   return (
@@ -336,13 +400,13 @@ const SwitchAssetInput = ({
                       <ExclamationIcon />
                     </SvgIcon>
                   )}
-                  {asset.balance && (
+                  {/* {asset.balance && (
                     <FormattedNumber
                       sx={{ ml: 'auto' }}
                       value={asset.balance}
                       compact
                     />
-                  )}
+                  )} */}
                 </MenuItem>
               ))
             ) : (
