@@ -4,6 +4,10 @@ import { safeGetAddress } from '@/utils';
 import { useReadContracts } from '../../packages/wagmi/src/hooks/useReadContracts';
 import { ERC20_ABI } from '@/abis/Erc20';
 import { useMemo } from 'react';
+import { UnsafeCurrency } from '@/config/constants/types';
+import useNativeCurrency from './useNatieCurrency';
+import { GELATO_NATIVE } from '@/config/constants';
+import { zeroAddress } from 'viem';
 
 export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
   const { chainId } = useActiveChainId();
@@ -65,4 +69,15 @@ export function useTokenByChainId(
     }
     return undefined;
   }, [chainId, address, isLoading, data]);
+}
+
+export function useCurrency(currencyId: string | undefined): UnsafeCurrency {
+  const native: NativeCurrency = useNativeCurrency();
+  const isNative =
+    currencyId?.toUpperCase() === native.symbol?.toUpperCase() ||
+    currencyId?.toLowerCase() === GELATO_NATIVE ||
+    currencyId?.toLowerCase() === zeroAddress;
+
+  const token = useToken(isNative ? undefined : currencyId);
+  return isNative ? native : token;
 }

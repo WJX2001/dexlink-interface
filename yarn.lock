@@ -1763,7 +1763,7 @@
     toformat "^2.0.0"
     viem "^2.21.22"
 
-"@pancakeswap/swap-sdk-core@1.3.0":
+"@pancakeswap/swap-sdk-core@1.3.0", "@pancakeswap/swap-sdk-core@^1.3.0":
   version "1.3.0"
   resolved "https://registry.npmmirror.com/@pancakeswap/swap-sdk-core/-/swap-sdk-core-1.3.0.tgz#51a4d86278632085ff49318e1f8497159a6c8eea"
   integrity sha512-nkeDs3GyNfvRGsTbTAO30yl6ccOTr5WQERsKAaxKTe1fbGvpDRFLo3nlR1ZddRCj+RYZSS+B4Sll4A39k7nFDQ==
@@ -1774,7 +1774,7 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@pancakeswap/swap-sdk-evm@1.0.6":
+"@pancakeswap/swap-sdk-evm@1.0.6", "@pancakeswap/swap-sdk-evm@^1.0.6":
   version "1.0.6"
   resolved "https://registry.npmmirror.com/@pancakeswap/swap-sdk-evm/-/swap-sdk-evm-1.0.6.tgz#532a23ccaf31abeb46ac67df6af2c00d22fc112f"
   integrity sha512-q4kTonZ5DOt/0FdMB19faZC4P9v5WidTnS7vlPalMguUXyAj79U1Hh1N37wqa6LcWFz2lTBnOrkaDst72h9MqA==

@@ -128,7 +128,6 @@ const SwitchAssetInput = ({
         asset.name.toLowerCase().includes(searchQuery) ||
         asset.address.toLowerCase() === searchQuery,
     );
-    // TODO: 后续还需要添加 自定义token 功能
     if (matchingAssets.length === 0 && isAddress(value)) {
       setLoadingNewAsset(true);
       const erc20Contract = getErc20Contract(value);
@@ -371,13 +370,13 @@ const SwitchAssetInput = ({
                       <ExclamationIcon />
                     </SvgIcon>
                   )}
-                  {/* {asset.balance && (
+                  {asset.balance && (
                     <FormattedNumber
                       sx={{ ml: 'auto' }}
                       value={asset.balance}
                       compact
                     />
-                  )} */}
+                  )}
                 </MenuItem>
               ))
             ) : (

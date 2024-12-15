@@ -19,6 +19,8 @@
     "@next/bundle-analyzer": "^15.0.3",
     "@pancakeswap/chains": "^0.4.6",
     "@pancakeswap/sdk": "^5.8.10",
+    "@pancakeswap/swap-sdk-core": "^1.3.0",
+    "@pancakeswap/swap-sdk-evm": "^1.0.6",
     "@pancakeswap/token-lists": "^0.0.14",
     "@rainbow-me/rainbowkit": "^2.2.0",
     "@svgr/webpack": "^8.1.0",

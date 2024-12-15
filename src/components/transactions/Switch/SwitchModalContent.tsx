@@ -1,11 +1,8 @@
 import { TokenInfoWithBalance } from '@/hooks/generic/useTokenBalance';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { useIsWrongNetwork } from '@/hooks/useIsWrongNetwork';
-import { useChainId } from 'wagmi';
 import ChangeNetworkWarning from '../Warnings/ChangeNetworkWarning';
-import { TMPNETWORK } from '@/ui-config/TokenList';
-import { ChainId } from '@/smart-router/constants/chainIdList';
 import { SupportedNetworkWithChainId } from './common';
 import { getNetworkConfig } from '@/utils/marketsAndNetworksConfig';
 import { Box, CircularProgress, IconButton, SvgIcon } from '@mui/material';
@@ -13,7 +10,8 @@ import { SwitchSlippageSelector } from './SwitchSlippageSelector';
 import SwitchAssetInput from './SwitchAssetInput';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { useModalContext } from '@/hooks/useModal';
-
+import { debounce } from 'lodash';
+import { useRootStore } from '@/store/root';
 interface SwitchModalContentProps {
   selectedChainId: number;
   setSelectedChainId: (value: number) => void;
@@ -73,29 +71,40 @@ const SwitchModalContent = ({
   defaultInputToken,
   defaultOutputToken,
   tokens,
-  addNewToken
+  addNewToken,
 }: SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState<string>('0.10');
   const [inputAmount, setInputAmount] = useState('');
-  const isWrongNetwork = useIsWrongNetwork(selectedChainId);
-  const selectedNetworkConfig = getNetworkConfig(selectedChainId);
-  const slippageValidation = validateSlippage(slippage);
-  const { txError, setTxError } = useModalContext();
+  const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const [selectedInputToken, setSelectedInputToken] =
     useState(defaultInputToken);
   const [selectedOutputToken, setSelectedOutputToken] =
     useState(defaultOutputToken);
 
+  const user = useRootStore((store) => store.account);
+  const isWrongNetwork = useIsWrongNetwork(selectedChainId);
+  const selectedNetworkConfig = getNetworkConfig(selectedChainId);
+  const slippageValidation = validateSlippage(slippage);
+  const { txError, setTxError } = useModalContext();
+
+  console.log(selectedInputToken,'selectedInputToken')
+  
   const handleInputChange = (value: string) => {
     setTxError(undefined);
     if (value === '-1') {
       setInputAmount(selectedInputToken.balance);
-      // debouncedInputChange(selectedInputToken.balance);
+      debouncedInputChange(selectedInputToken.balance);
     } else {
       setInputAmount(value);
-      // debouncedInputChange(value);
+      debouncedInputChange(value);
     }
   };
+
+  const debouncedInputChange = useMemo(() => {
+    return debounce((value: string) => {
+      setDebounceInputAmount(value);
+    }, 300);
+  }, [setDebounceInputAmount]);
 
   const handleSelectedInputToken = (token: TokenInfoWithBalance) => {
     if (!tokens.find((t) => t.address === token.address)) {
@@ -119,6 +128,11 @@ const SwitchModalContent = ({
       setSelectedOutputToken(token);
       setTxError(undefined);
     }
+  };
+
+  const onSwitchReserves = () => {
+    const fromToken = selectedInputToken;
+    const toToken = selectedOutputToken;
   };
 
   return (
@@ -206,6 +220,7 @@ const SwitchModalContent = ({
               selectedAsset={selectedOutputToken}
             />
           </Box>
+          {user ? 2222 : 222222}
         </>
       )}
     </>

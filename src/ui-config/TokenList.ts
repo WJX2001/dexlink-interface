@@ -26,9 +26,8 @@ export interface TokenList {
   tokens: TokenInfo[];
 }
 
-
 // TODO: 这里临时定位linea_test
-export const TMPNETWORK = ChainId.fuji
+export const TMPNETWORK = ChainId.fuji;
 
 export const TOKEN_LIST: TokenList = {
   name: 'Labs Default',
@@ -71,6 +70,9 @@ export const TOKEN_LIST: TokenList = {
       chainId: TMPNETWORK,
       logoURI:
         'https://assets.coingecko.com/coins/images/9519/thumb/paxg.PNG?1568542565',
+      extensions: {
+        isNative: true,
+      },
     },
     // {
     //   name: 'Pearl',
@@ -89,10 +91,12 @@ export const TOKEN_LIST: TokenList = {
       chainId: TMPNETWORK,
       logoURI:
         'https://assets.coingecko.com/coins/images/12738/thumb/AlphaToken_256x256.png?1617160876',
+      extensions: {
+        isNative: true,
+      },
     },
   ],
 };
-
 
 export const COMMON_SWAPS = [
   'ETH',
