@@ -1,4 +1,4 @@
-import { Warning } from '@/components/primitives/Warining';
+import { Warning } from '@/components/primitives/Warning';
 import { ChainId } from '@/smart-router/constants/chainIdList';
 import { AlertProps, Button, Typography } from '@mui/material';
 import { useChainModal } from '@rainbow-me/rainbowkit';

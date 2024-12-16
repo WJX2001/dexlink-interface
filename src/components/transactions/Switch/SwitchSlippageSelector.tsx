@@ -16,7 +16,7 @@ import { MouseEvent, useState } from 'react';
 
 import { ValidationData } from './SwitchModalContent';
 import { FormattedNumber } from '@/components/primitives/FormattedNumber';
-import { Warning } from '@/components/primitives/Warining';
+import { Warning } from '@/components/primitives/Warning';
 
 const DEFAULT_SLIPPAGE_OPTIONS = ['0.10', '0.50', '1.00'];
 

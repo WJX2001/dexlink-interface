@@ -61,7 +61,7 @@ export const NumberFormatCustom = React.forwardRef<
 
 export interface AssetInputProps {
   value: string;
-  usdValue: string;
+  usdValue?: string;
   chainId: number;
   onChange?: (value: string) => void;
   disabled?: boolean;

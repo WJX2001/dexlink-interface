@@ -6,6 +6,20 @@ export const queryKeysFactory = {
     ...queryKeysFactory.user(user),
     tokenList.map((elem) => elem.address),
     chainId,
-    'tokensBalance'
+    'tokensBalance',
+  ],
+  swapRates: (
+    chainId: number,
+    amount: string,
+    srcToken: string,
+    destToken: string,
+    user: string,
+  ) => [
+    ...queryKeysFactory.user(user),
+    chainId,
+    amount,
+    srcToken,
+    destToken,
+    'swapRates',
   ],
 };

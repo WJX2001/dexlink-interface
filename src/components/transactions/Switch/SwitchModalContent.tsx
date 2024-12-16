@@ -5,13 +5,25 @@ import { useIsWrongNetwork } from '@/hooks/useIsWrongNetwork';
 import ChangeNetworkWarning from '../Warnings/ChangeNetworkWarning';
 import { SupportedNetworkWithChainId } from './common';
 import { getNetworkConfig } from '@/utils/marketsAndNetworksConfig';
-import { Box, CircularProgress, IconButton, SvgIcon } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  SvgIcon,
+  Typography,
+} from '@mui/material';
 import { SwitchSlippageSelector } from './SwitchSlippageSelector';
 import SwitchAssetInput from './SwitchAssetInput';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { useModalContext } from '@/hooks/useModal';
 import { debounce } from 'lodash';
 import { useRootStore } from '@/store/root';
+import { useSwapSellRates } from '@/hooks/useSellRates';
+import { normalizeBN } from '@aave/math-utils';
+import { Warning } from '@/components/primitives/Warning';
+import { SwitchErrors } from './SwitchErrors';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 interface SwitchModalContentProps {
   selectedChainId: number;
   setSelectedChainId: (value: number) => void;
@@ -86,9 +98,27 @@ const SwitchModalContent = ({
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const slippageValidation = validateSlippage(slippage);
   const { txError, setTxError } = useModalContext();
+  const { openConnectModal } = useConnectModal();
+  const {
+    data: sellRates,
+    error: ratesError,
+    isFetching: ratesLoading,
+  } = useSwapSellRates({
+    chainId: selectedChainId,
+    amount:
+      debounceInputAmount === ''
+        ? '0'
+        : normalizeBN(
+            debounceInputAmount,
+            -1 * selectedInputToken.decimals,
+          ).toFixed(0),
+    srcToken: selectedInputToken.address,
+    srcDecimals: selectedInputToken.decimals,
+    destToken: selectedOutputToken.address,
+    destDecimals: selectedOutputToken.decimals,
+    user,
+  });
 
-  console.log(selectedInputToken,'selectedInputToken')
-  
   const handleInputChange = (value: string) => {
     setTxError(undefined);
     if (value === '-1') {
@@ -133,8 +163,15 @@ const SwitchModalContent = ({
   const onSwitchReserves = () => {
     const fromToken = selectedInputToken;
     const toToken = selectedOutputToken;
+    const toInput = sellRates
+      ? normalizeBN(sellRates.destAmount, sellRates.destDecimals).toString()
+      : '0';
+    setSelectedInputToken(toToken);
+    setSelectedOutputToken(fromToken);
+    setInputAmount(toInput);
+    setDebounceInputAmount(toInput);
+    setTxError(undefined);
   };
-
   return (
     <>
       <TxModalTitle title="Switch tokens" />
@@ -179,12 +216,12 @@ const SwitchModalContent = ({
               )}
               value={inputAmount}
               onChange={handleInputChange}
-              usdValue={'0'}
+              // usdValue={'0'}
               onSelect={handleSelectedInputToken}
               selectedAsset={selectedInputToken}
             />
             <IconButton
-              // onClick={onSwitchReserves}
+              onClick={onSwitchReserves}
               sx={{
                 border: '1px solid',
                 borderColor: 'divider',
@@ -207,20 +244,62 @@ const SwitchModalContent = ({
               assets={tokens.filter(
                 (token) => token.address !== selectedInputToken.address,
               )}
-              value={'0'}
-              usdValue={'0'}
-              // loading={
-              //   debounceInputAmount !== '0' &&
-              //   debounceInputAmount !== '' &&
-              //   ratesLoading &&
-              //   !ratesError
-              // }
+              value={
+                sellRates
+                  ? normalizeBN(
+                      sellRates?.destAmount,
+                      sellRates.destDecimals,
+                    ).toString()
+                  : 'NA'
+              }
+              // usdValue={'0'}
+              loading={
+                debounceInputAmount !== '0' &&
+                debounceInputAmount !== '' &&
+                ratesLoading &&
+                !ratesError
+              }
               onSelect={handleSelectedOutputToken}
               disableInput={true}
               selectedAsset={selectedOutputToken}
             />
           </Box>
-          {user ? 2222 : 222222}
+          {user ? (
+            <>
+              {(selectedInputToken.extensions?.isUserCustom ||
+                selectedOutputToken.extensions?.isUserCustom) && (
+                <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
+                  <Typography variant="caption">
+                    You have selected a custom imported token.
+                  </Typography>
+                </Warning>
+              )}
+              <SwitchErrors
+                ratesError={ratesError}
+                balance={selectedInputToken.balance}
+                inputAmount={debounceInputAmount}
+              />
+            </>
+          ) : (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                mt: 4,
+                alignItems: 'center',
+              }}
+            >
+              <Typography
+                sx={{ mb: 6, textAlign: 'center' }}
+                color="text.secondary"
+              >
+                Please connect your wallet to be able to switch your tokens.
+              </Typography>
+              <Button variant="gradient" onClick={openConnectModal}>
+                Connect wallet
+              </Button>
+            </Box>
+          )}
         </>
       )}
     </>
