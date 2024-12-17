@@ -8,6 +8,7 @@ export const queryKeysFactory = {
     chainId,
     'tokensBalance',
   ],
+  gasPrices: (chainId: number) => [chainId, 'gasPrices'],
   swapRates: (
     chainId: number,
     amount: string,

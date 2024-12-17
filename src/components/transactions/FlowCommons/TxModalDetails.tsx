@@ -1,6 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import React, { ReactNode } from 'react';
 import GasStation from '../GasStation/GasStation';
+import { parseUnits } from 'ethers/lib/utils';
+import { parseGwei } from 'viem';
 
 export interface TxModalDetailsProps {
   gasLimit?: string;
@@ -38,7 +40,13 @@ const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         {children}
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <GasStation />
+        <GasStation
+          chainId={chainId}
+          gasLimit={parseGwei(gasLimit || '0')}
+          skipLoad={skipLoad}
+          disabled={disabled}
+          rightComponent={slippageSelector}
+        />
       </Box>
     </Box>
   );
