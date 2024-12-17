@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@aave/contract-helpers@1.30.5":
+  version "1.30.5"
+  resolved "https://registry.npmmirror.com/@aave/contract-helpers/-/contract-helpers-1.30.5.tgz#2dca36c08701548eb7ad52551514215cfd4c3b6a"
+  integrity sha512-4CCLROduGD6HG3/DYAWS9KPDe30Pbo+b2LNKblLCy+Y90lE8aB5/e0RVZ47+vHheV9qOCjEjLYXEyeUYo7NvFg==
+  dependencies:
+    isomorphic-unfetch "^3.1.0"
+
 "@aave/math-utils@^1.30.5":
   version "1.30.5"
   resolved "https://registry.npmmirror.com/@aave/math-utils/-/math-utils-1.30.5.tgz#6c6bbf46d8a422e00504e92cf8b3f6fcad626d04"
@@ -5237,6 +5244,14 @@ isexe@^2.0.0:
   resolved "https://registry.npmmirror.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
+isomorphic-unfetch@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.npmmirror.com/isomorphic-unfetch/-/isomorphic-unfetch-3.1.0.tgz#87341d5f4f7b63843d468438128cb087b7c3e98f"
+  integrity sha512-geDJjpoZ8N0kWexiwkX8F9NkTsXhetLPVbZFQ+JTW239QNOwvB0gniuR1Wc6f0AMTn7/mFGyXvHTifrCp/GH8Q==
+  dependencies:
+    node-fetch "^2.6.1"
+    unfetch "^4.2.0"
+
 isows@1.0.6:
   version "1.0.6"
   resolved "https://registry.npmmirror.com/isows/-/isows-1.0.6.tgz#0da29d706fa51551c663c627ace42769850f86e7"
@@ -5682,7 +5697,7 @@ node-fetch-native@^1.6.4:
   resolved "https://registry.npmmirror.com/node-fetch-native/-/node-fetch-native-1.6.4.tgz#679fc8fd8111266d47d7e72c379f1bed9acff06e"
   integrity sha512-IhOigYzAKHd244OC0JIMIUrjzctirCmPkaIfhDeGcEETWof5zKYUW7e7MYvChGWh/4CJeXEgsRyGzuF334rOOQ==
 
-node-fetch@^2.6.12:
+node-fetch@^2.6.1, node-fetch@^2.6.12:
   version "2.7.0"
   resolved "https://registry.npmmirror.com/node-fetch/-/node-fetch-2.7.0.tgz#d0f0fa6e3e2dc1d27efcd8ad99d550bda94d187d"
   integrity sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==
@@ -6950,6 +6965,11 @@ unenv@^1.10.0:
     mime "^3.0.0"
     node-fetch-native "^1.6.4"
     pathe "^1.1.2"
+
+unfetch@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npmmirror.com/unfetch/-/unfetch-4.2.0.tgz#7e21b0ef7d363d8d9af0fb929a5555f6ef97a3be"
+  integrity sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.1"
