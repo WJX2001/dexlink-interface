@@ -10,6 +10,8 @@ import { ModalContextProvider } from '@/hooks/useModal';
 import dynamic from 'next/dynamic';
 import RainbowKitProviderCustom from '@/lib/rainboKit-provider';
 import { Web3ContextProvider } from '@/lib/web3-data-provider/Web3Provider';
+import { GasStationProvider } from '@/components/transactions/GasStation/GasStationProvider';
+
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
@@ -33,8 +35,10 @@ export default function App({ Component, pageProps }: MyAppProps) {
           <RainbowKitProviderCustom>
             <AppGlobalStyles>
               <ModalContextProvider>
-                {getLayout(<Component {...pageProps} />)}
-                <SwitchModal />
+                <GasStationProvider>
+                  {getLayout(<Component {...pageProps} />)}
+                  <SwitchModal />
+                </GasStationProvider>
               </ModalContextProvider>
             </AppGlobalStyles>
           </RainbowKitProviderCustom>

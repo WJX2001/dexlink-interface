@@ -7,7 +7,6 @@ export default function useNativeCurrency(
   overrideChainId?: ChainId,
 ): NativeCurrency {
   const { chainId } = useActiveChainId();
-  debugger
   return useMemo(() => {
     try {
       return Native.onChain(overrideChainId ?? chainId ?? ChainId.bnb);
