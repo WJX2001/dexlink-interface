@@ -44,7 +44,7 @@ export const TOKEN_LIST: TokenList = {
     {
       name: 'Dai',
       symbol: 'DAI',
-      address: '0x095Ee44c0b62FEAF7A1B6096a1B6Fe4B0bbF28E0',
+      address: '0x51BC2DfB9D12d9dB50C855A5330fBA0faF761D15',
       decimals: 18,
       chainId: TMPNETWORK,
       logoURI:
@@ -74,15 +74,15 @@ export const TOKEN_LIST: TokenList = {
         isNative: true,
       },
     },
-    // {
-    //   name: 'Pearl',
-    //   symbol: 'PEARL',
-    //   address: '0xAc7B5DdC47D23ad480765120d17bF426B858F22a',
-    //   decimals: 18,
-    //   chainId: TMPNETWORK,
-    //   logoURI:
-    //     'https://assets.coingecko.com/coins/images/30799/large/Yp9H3agr_400x400.jpg?1696529660',
-    // },
+    {
+      name: 'Pearl',
+      symbol: 'PEARL',
+      address: '0xAc7B5DdC47D23ad480765120d17bF426B858F22a',
+      decimals: 18,
+      chainId: TMPNETWORK,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/30799/large/Yp9H3agr_400x400.jpg?1696529660',
+    },
     {
       name: 'Link',
       symbol: 'LINK',

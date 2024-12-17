@@ -17,6 +17,8 @@ export interface ModalContextType<T extends ModalArgsType> {
   type?: ModalType;
   txError: TxErrorType | undefined;
   setTxError: (error: TxErrorType | undefined) => void;
+  gasLimit: string;
+  setGasLimit: (limit: string) => void;
 }
 
 interface ModalContextProviderProps {
@@ -35,6 +37,7 @@ export const ModalContextProvider: React.FC<ModalContextProviderProps> = ({
   const [args, setArgs] = useState<ModalArgsType>({});
   const [type, setType] = useState<ModalType>();
   const [txError, setTxError] = useState<TxErrorType>();
+  const [gasLimit, setGasLimit] = useState<string>('');
   return (
     <ModalContext.Provider
       value={{
@@ -50,7 +53,9 @@ export const ModalContextProvider: React.FC<ModalContextProviderProps> = ({
         args,
         type,
         txError,
-        setTxError
+        setTxError,
+        gasLimit,
+        setGasLimit,
       }}
     >
       {children}

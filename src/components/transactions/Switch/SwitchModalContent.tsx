@@ -20,10 +20,15 @@ import { useModalContext } from '@/hooks/useModal';
 import { debounce } from 'lodash';
 import { useRootStore } from '@/store/root';
 import { useSwapSellRates } from '@/hooks/useSellRates';
-import { normalizeBN } from '@aave/math-utils';
+import { normalizeBN, normalize } from '@aave/math-utils';
 import { Warning } from '@/components/primitives/Warning';
 import { SwitchErrors } from './SwitchErrors';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import SwitchActions from './SwitchActions';
+import TxModalDetails from '../FlowCommons/TxModalDetails';
+import { Row } from '@/components/primitives/Row';
+import { FormattedNumber } from '@/components/primitives/FormattedNumber';
+import { formatUnits } from 'viem';
 interface SwitchModalContentProps {
   selectedChainId: number;
   setSelectedChainId: (value: number) => void;
@@ -93,12 +98,18 @@ const SwitchModalContent = ({
   const [selectedOutputToken, setSelectedOutputToken] =
     useState(defaultOutputToken);
 
+  const { gasLimit, txError, setTxError } = useModalContext();
+  const { openConnectModal } = useConnectModal();
   const user = useRootStore((store) => store.account);
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
   const selectedNetworkConfig = getNetworkConfig(selectedChainId);
   const slippageValidation = validateSlippage(slippage);
-  const { txError, setTxError } = useModalContext();
-  const { openConnectModal } = useConnectModal();
+
+  const safeSlippage =
+    slippageValidation &&
+    slippageValidation.severity === ValidationSeverity.ERROR
+      ? 0
+      : Number(slippage) / 100;
   const {
     data: sellRates,
     error: ratesError,
@@ -216,7 +227,7 @@ const SwitchModalContent = ({
               )}
               value={inputAmount}
               onChange={handleInputChange}
-              // usdValue={'0'}
+              usdValue={'0'}
               onSelect={handleSelectedInputToken}
               selectedAsset={selectedInputToken}
             />
@@ -250,9 +261,9 @@ const SwitchModalContent = ({
                       sellRates?.destAmount,
                       sellRates.destDecimals,
                     ).toString()
-                  : 'NA'
+                  : '0'
               }
-              // usdValue={'0'}
+              usdValue={'0'}
               loading={
                 debounceInputAmount !== '0' &&
                 debounceInputAmount !== '' &&
@@ -264,6 +275,38 @@ const SwitchModalContent = ({
               selectedAsset={selectedOutputToken}
             />
           </Box>
+          {sellRates && user && (
+            <TxModalDetails gasLimit={gasLimit} chainId={selectedChainId}>
+              <Row
+                caption={`Minimum ${selectedOutputToken.symbol} received`}
+                captionVariant="caption"
+              >
+                <FormattedNumber
+                  compact={false}
+                  roundDown={true}
+                  variant="caption"
+                  value={
+                    Number(
+                      normalize(sellRates.destAmount, sellRates.destDecimals),
+                    ) *
+                    (1 - safeSlippage)
+                  }
+                />
+              </Row>
+              <Row
+                sx={{ mt: 1 }}
+                caption={'Minimum USD value received'}
+                captionVariant="caption"
+              >
+                <FormattedNumber
+                  symbol="usd"
+                  symbolsVariant="caption"
+                  variant="caption"
+                  value={Number(sellRates.destUSD) * (1 - safeSlippage)}
+                />
+              </Row>
+            </TxModalDetails>
+          )}
           {user ? (
             <>
               {(selectedInputToken.extensions?.isUserCustom ||
@@ -279,6 +322,8 @@ const SwitchModalContent = ({
                 balance={selectedInputToken.balance}
                 inputAmount={debounceInputAmount}
               />
+              {/* {txError && <ParaswapErrorDisplay txError={txError} />} */}
+              <SwitchActions />
             </>
           ) : (
             <Box
