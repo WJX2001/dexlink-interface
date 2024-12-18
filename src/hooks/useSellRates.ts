@@ -17,6 +17,7 @@ type SwapSellRatesResult = {
   destAmount: string; // 假设 getAmountsOut 返回一个 `bigint[]`
   destDecimals: number;
   destUSD: string
+  srcDecimals: number
 };
 
 export const useSwapSellRates = ({
@@ -39,7 +40,8 @@ export const useSwapSellRates = ({
       return {
         destAmount: valuesout[1].toString(),
         destDecimals,
-        destUSD: '0'
+        destUSD: '0',
+        srcDecimals
       };
     },
     queryKey: queryKeysFactory.swapRates(

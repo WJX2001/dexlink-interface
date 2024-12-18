@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import TxActionsWrapper from '../TxActionsWrapper';
+import { useModalContext } from '@/hooks/useModal';
+import { calculateSignedAmount } from '@/hooks/swap/common';
 
 interface SwithProps {
   inputAmount: string;
@@ -15,7 +17,6 @@ interface SwithProps {
   outputName: string;
 }
 
-
 const SwitchActions = ({
   inputAmount,
   inputToken,
@@ -29,7 +30,42 @@ const SwitchActions = ({
   chainId,
   route,
 }: SwithProps) => {
-  return <TxActionsWrapper />;
+  const { approvalTxState,loadingTxns } = useModalContext();
+  const requiresApproval = useMemo(() => {
+    return false
+  },[])
+
+  const approval = async() => {
+    if(route) {
+      const amountToApprove = calculateSignedAmount(inputAmount, route.srcDecimals, 0);
+    }
+  }
+
+  const action = async() => {
+  }
+
+  return (
+    <TxActionsWrapper
+      approvalTxState={approvalTxState}
+      isWrongNetwork={isWrongNetwork}
+      preparingTransactions={loadingTxns}
+      requiresAmount
+      amount={inputAmount}
+      handleApproval={() => approval()}
+      handleAction={action}
+      requiresApproval={!blocked && requiresApproval}
+      actionText={<>Switch</>}
+      actionInProgressText={<>Switching</>}
+      errorParams={{
+        loading: false,
+        disabled: blocked || (!approvalTxState.success && requiresApproval),
+        content: <>Switch</>,
+        handleClick: action,
+      }}
+      fetchingData={loading}
+      blocked={blocked}
+    />
+  );
 };
 
 export default SwitchActions;

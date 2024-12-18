@@ -129,7 +129,7 @@ const SwitchModalContent = ({
     destDecimals: selectedOutputToken.decimals,
     user,
   });
-
+  
   const handleInputChange = (value: string) => {
     setTxError(undefined);
     if (value === '-1') {
