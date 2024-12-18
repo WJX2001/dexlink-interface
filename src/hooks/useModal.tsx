@@ -6,6 +6,13 @@ export interface ModalArgsType {
   chainId?: number;
 }
 
+export type TxStateType = {
+  txHash?: string;
+  // txError?: string;
+  loading?: boolean;
+  success?: boolean;
+};
+
 export enum ModalType {
   Switch,
 }

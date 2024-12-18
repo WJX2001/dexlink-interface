@@ -10,6 +10,8 @@ import { useRootStore } from '@/store/root';
 export type Web3Data = {
   factoryAddress: string;
   chainId: number;
+  readOnlyModeAddress: string | undefined;
+  readOnlyMode: boolean;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
@@ -19,6 +21,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
   const { address: account } = useAccount();
   const routerContract = useRouterContract();
   const [factoryAddress, setFactoryAddress] = useState<string>('');
+  const [readOnlyMode, setReadOnlyMode] = useState(false);
   const setAccount = useRootStore((store) => store.setAccount);
   const getWethAddress = useCallback(async () => {
     const factory_address = (await routerContract?.read.factory()) as Address;
@@ -41,6 +44,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
         web3ProviderData: {
           chainId: chainId || 1,
           factoryAddress,
+          readOnlyModeAddress: readOnlyMode
+            ? account?.toLowerCase()
+            : undefined,
+          readOnlyMode,
         },
       }}
     >

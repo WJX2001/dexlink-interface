@@ -10,13 +10,25 @@ interface SwithProps {
   loading?: boolean;
   isWrongNetwork: boolean;
   chainId: number;
-  // route?: OptimalRate;
+  route?: any;
   inputName: string;
   outputName: string;
 }
 
 
-const SwitchActions = () => {
+const SwitchActions = ({
+  inputAmount,
+  inputToken,
+  inputName,
+  outputName,
+  outputToken,
+  slippage,
+  blocked,
+  loading,
+  isWrongNetwork,
+  chainId,
+  route,
+}: SwithProps) => {
   return <TxActionsWrapper />;
 };
 

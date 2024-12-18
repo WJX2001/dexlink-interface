@@ -323,7 +323,23 @@ const SwitchModalContent = ({
                 inputAmount={debounceInputAmount}
               />
               {/* {txError && <ParaswapErrorDisplay txError={txError} />} */}
-              <SwitchActions />
+              <SwitchActions
+                isWrongNetwork={isWrongNetwork.isWrongNetwork}
+                inputAmount={debounceInputAmount}
+                inputToken={selectedInputToken.address}
+                outputToken={selectedOutputToken.address}
+                inputName={selectedInputToken.name}
+                outputName={selectedOutputToken.name}
+                slippage={safeSlippage.toString()}
+                blocked={
+                  !sellRates ||
+                  Number(debounceInputAmount) > Number(selectedInputToken.balance) ||
+                  !user ||
+                  slippageValidation?.severity === ValidationSeverity.ERROR
+                }
+                chainId={selectedChainId}
+                route={sellRates}
+              />
             </>
           ) : (
             <Box
