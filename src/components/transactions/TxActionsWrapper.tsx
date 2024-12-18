@@ -69,16 +69,16 @@ const TxActionsWrapper = ({
   };
 
   const getApprovalParams = () => {
-    // if (
-    //   !requiresApproval ||
-    //   isWrongNetwork ||
-    //   isAmountMissing ||
-    //   preparingTransactions
-    //   // || hasApprovalError
-    //   // TODO: 这里需要完善下
-    // ) {
-    //   return null;
-    // }
+    if (
+      !requiresApproval ||
+      isWrongNetwork ||
+      isAmountMissing ||
+      preparingTransactions
+      // || hasApprovalError
+      // TODO: 这里需要完善下hasApprovalError
+    ) {
+      return null;
+    }
 
     if (approvalTxState?.loading) {
       return {
@@ -140,7 +140,7 @@ const TxActionsWrapper = ({
         </Button>
       )}
 
-      {/* <Button
+      <Button
         variant="contained"
         // disabled={disabled || blocked || readOnlyModeAddress !== undefined}
         onClick={handleClick}
@@ -152,7 +152,7 @@ const TxActionsWrapper = ({
           <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
         )}
         {content}
-      </Button> */}
+      </Button>
     </Box>
   );
 };
