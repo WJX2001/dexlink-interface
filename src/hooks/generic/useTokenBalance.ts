@@ -49,7 +49,6 @@ export const useTokensBalancePlus = (
   user: string,
 ) => {
   const publicClient = usePublicClient({ chainId });
-  console.log(publicClient,'publicClient')
   const contracts = tokenList?.map((token) => {
     return {
       address: token.address,

@@ -32,7 +32,6 @@ const GasStation: React.FC<GasStationProps> = ({
   const marketOnNetwork = Object.values(marketsData)
     .filter((elem) => elem.chainId === selectedChainId)
     .find((elem) => !elem.v3);
-  console.log(marketOnNetwork, 'marketOnNetwork');
   invariant(marketOnNetwork, 'No market for this network');
   const { data: gasPrice } = useGasPrice(selectedChainId);
 
