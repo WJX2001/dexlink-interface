@@ -14,7 +14,7 @@ type SwapSellRatesParams = {
   user: string;
 };
 
-interface OptimalRate {
+export interface OptimalRate {
   network: number;
   srcToken: Address;
   srcDecimals: number;

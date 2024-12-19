@@ -1,9 +1,10 @@
 import { StateCreator } from 'zustand';
 import { RootStore } from './root';
+import { Address, zeroAddress } from 'viem';
 
 export interface WalletSlice {
-  account: string;
-  setAccount: (account: string | undefined) => void;
+  account: Address;
+  setAccount: (account:  Address | undefined) => void;
 }
 
 export const createWalletSlice: StateCreator<
@@ -12,10 +13,10 @@ export const createWalletSlice: StateCreator<
   [],
   WalletSlice
 > = (set, get) => ({
-  account: '',
+  account: zeroAddress,
   setAccount(account) {
     set({
-      account: account || '',
+      account: account || zeroAddress,
     });
   },
 });

@@ -1,3 +1,4 @@
+import { ERC20_ABI } from '@/abis/Erc20';
 import { getContract } from '@/utils/contractHelper';
 import { useMemo } from 'react';
 import { Abi, Address } from 'viem';
@@ -35,4 +36,6 @@ export function useContract<TAbi extends Abi>(
   }, [addressOrAddressMap, abi, chainId, walletClient]);
 }
 
-
+export const useERC20 = (address: Address) => {
+  return useContract(address, ERC20_ABI);
+};

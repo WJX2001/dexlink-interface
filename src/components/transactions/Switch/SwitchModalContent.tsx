@@ -28,7 +28,7 @@ import SwitchActions from './SwitchActions';
 import TxModalDetails from '../FlowCommons/TxModalDetails';
 import { Row } from '@/components/primitives/Row';
 import { FormattedNumber } from '@/components/primitives/FormattedNumber';
-import { formatUnits } from 'viem';
+import { formatUnits, zeroAddress } from 'viem';
 interface SwitchModalContentProps {
   selectedChainId: number;
   setSelectedChainId: (value: number) => void;
@@ -129,7 +129,7 @@ const SwitchModalContent = ({
     destDecimals: selectedOutputToken.decimals,
     user,
   });
-  
+
   const handleInputChange = (value: string) => {
     setTxError(undefined);
     if (value === '-1') {
@@ -275,7 +275,7 @@ const SwitchModalContent = ({
               selectedAsset={selectedOutputToken}
             />
           </Box>
-          {sellRates && user && (
+          {sellRates && user !== zeroAddress && (
             <TxModalDetails gasLimit={gasLimit} chainId={selectedChainId}>
               <Row
                 caption={`Minimum ${selectedOutputToken.symbol} received`}
@@ -307,7 +307,7 @@ const SwitchModalContent = ({
               </Row>
             </TxModalDetails>
           )}
-          {user ? (
+          {user !== zeroAddress ? (
             <>
               {(selectedInputToken.extensions?.isUserCustom ||
                 selectedOutputToken.extensions?.isUserCustom) && (
@@ -333,8 +333,9 @@ const SwitchModalContent = ({
                 slippage={safeSlippage.toString()}
                 blocked={
                   !sellRates ||
-                  Number(debounceInputAmount) > Number(selectedInputToken.balance) ||
-                  !user ||
+                  Number(debounceInputAmount) >
+                    Number(selectedInputToken.balance) ||
+                  user === zeroAddress ||
                   slippageValidation?.severity === ValidationSeverity.ERROR
                 }
                 chainId={selectedChainId}
