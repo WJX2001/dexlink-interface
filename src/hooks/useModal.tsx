@@ -30,6 +30,8 @@ export interface ModalContextType<T extends ModalArgsType> {
   setApprovalTxState: (data: TxStateType) => void;
   loadingTxns: boolean;
   setLoadingTxns: (loading: boolean) => void;
+  mainTxState: TxStateType;
+  setMainTxState: (data: TxStateType) => void;
 }
 
 interface ModalContextProviderProps {
@@ -51,6 +53,7 @@ export const ModalContextProvider: React.FC<ModalContextProviderProps> = ({
   const [gasLimit, setGasLimit] = useState<string>('');
   const [approvalTxState, setApprovalTxState] = useState<TxStateType>({});
   const [loadingTxns, setLoadingTxns] = useState(false);
+  const [mainTxState, setMainTxState] = useState<TxStateType>({});
   return (
     <ModalContext.Provider
       value={{
@@ -75,6 +78,8 @@ export const ModalContextProvider: React.FC<ModalContextProviderProps> = ({
         setApprovalTxState,
         loadingTxns,
         setLoadingTxns,
+        mainTxState,
+        setMainTxState,
       }}
     >
       {children}

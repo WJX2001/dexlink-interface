@@ -1,4 +1,4 @@
-import { TxStateType } from '@/hooks/useModal';
+import { TxStateType, useModalContext } from '@/hooks/useModal';
 import { useWeb3Context } from '@/lib/hooks/useWeb3Context';
 import {
   Box,
@@ -10,6 +10,7 @@ import {
 import React, { ReactNode } from 'react';
 import { CheckIcon } from '@heroicons/react/solid';
 import { ApprovalTooltip } from '../infoTooltips/ApprovalTooltip';
+import { TxAction } from '@/ui-config/errorMapping';
 interface TxActionsWrapperProps extends BoxProps {
   approvalTxState?: TxStateType;
   isWrongNetwork: boolean;
@@ -30,6 +31,7 @@ interface TxActionsWrapperProps extends BoxProps {
     handleClick: () => Promise<void>;
   };
   blocked?: boolean;
+  mainTxState: TxStateType;
 }
 
 const TxActionsWrapper = ({
@@ -48,21 +50,26 @@ const TxActionsWrapper = ({
   blocked,
   actionText,
   handleAction,
+  mainTxState,
   ...rest
 }: TxActionsWrapperProps) => {
   const { readOnlyModeAddress } = useWeb3Context();
+  const { txError } = useModalContext();
+  const hasApprovalError =
+    requiresApproval &&
+    txError?.txAction === TxAction.APPROVAL &&
+    txError?.actionBlocked;
   const isAmountMissing =
     requiresAmount && requiresAmount && Number(amount) === 0;
+
   // get main params
   const getMainParams = () => {
     if (blocked) return { disabled: true, content: actionText };
     if (isWrongNetwork) return { disabled: true, content: <>Wrong Network</> };
     if (fetchingData) return { disabled: true, content: <>Fetching data...</> };
     if (preparingTransactions) return { disabled: true, loading: true };
-    // if (hasApprovalError && handleRetry)
-    //   return { content: <>Retry with approval</>, handleClick: handleRetry };
-    // if (mainTxState?.loading)
-    //   return { loading: true, disabled: true, content: actionInProgressText };
+    if (mainTxState?.loading)
+      return { loading: true, disabled: true, content: actionInProgressText };
     if (requiresApproval && !approvalTxState?.success)
       return { disabled: true, content: actionText };
     return { content: actionText, handleClick: handleAction };
@@ -73,9 +80,8 @@ const TxActionsWrapper = ({
       !requiresApproval ||
       isWrongNetwork ||
       isAmountMissing ||
-      preparingTransactions
-      // || hasApprovalError
-      // TODO: 这里需要完善下hasApprovalError
+      preparingTransactions ||
+      hasApprovalError
     ) {
       return null;
     }
@@ -100,7 +106,6 @@ const TxActionsWrapper = ({
         ),
       };
     }
-
     return {
       content: (
         <ApprovalTooltip
@@ -145,7 +150,7 @@ const TxActionsWrapper = ({
         // disabled={disabled || blocked || readOnlyModeAddress !== undefined}
         onClick={handleClick}
         size="large"
-        // sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
+        sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
         data-cy="actionButton"
       >
         {loading && (

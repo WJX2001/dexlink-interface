@@ -1,5 +1,12 @@
 import { InformationCircleIcon } from '@heroicons/react/outline';
-import { Box, BoxProps, IconButton, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  BoxProps,
+  IconButton,
+  SvgIcon,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import {
   JSXElementConstructor,
@@ -7,6 +14,7 @@ import {
   ReactNode,
   useState,
 } from 'react';
+import { ContentWithTooltip } from './ContentWithTooltip';
 
 export interface TextWithTooltipProps extends TypographyProps {
   text?: ReactNode;
@@ -37,11 +45,6 @@ export const TextWithTooltip = ({
 }: TextWithTooltipProps) => {
   const [open, setOpen] = useState(openProp);
 
-  const toggleOpen = () => {
-    if (setOpenProp) setOpenProp(!open);
-    setOpen(!open);
-  };
-
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', ...boxSx }} {...boxRest}>
       {text && (
@@ -49,26 +52,31 @@ export const TextWithTooltip = ({
           {text}
         </Typography>
       )}
-      <IconButton
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: iconSize,
-          height: iconSize,
-          borderRadius: '50%',
-          p: 0,
-          minWidth: 0,
-          ml: iconMargin || 0.5,
-        }}
-        onClick={() => {
-          if (event) {
-            // trackEvent(event.eventName, { ...event.eventParams });
-            console.log(11111);
-          }
-        }}
+      <Tooltip
+        title={
+          <Box
+            sx={{
+              py: 4,
+              px: 6,
+              fontSize: '14px',
+              lineHeight: '16px',
+              a: {
+                fontSize: '14px',
+                lineHeight: '16px',
+                fontWeight: 500,
+                '&:hover': { textDecoration: 'underline' },
+              },
+            }}
+          >
+            {children}
+          </Box>
+        }
       >
         <SvgIcon
+          onClick={(e) => {
+            console.log(e)
+            e.preventDefault()
+          }}
           sx={{
             fontSize: iconSize,
             color: iconColor ? iconColor : open ? 'info.main' : 'text.muted',
@@ -78,7 +86,7 @@ export const TextWithTooltip = ({
         >
           {icon || <InformationCircleIcon />}
         </SvgIcon>
-      </IconButton>
+      </Tooltip>
     </Box>
   );
 };

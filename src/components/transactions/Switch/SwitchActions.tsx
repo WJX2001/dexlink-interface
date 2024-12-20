@@ -9,9 +9,14 @@ import { OptimalRate } from '@/hooks/useSellRates';
 import { useGasPrice, useWalletClient } from 'wagmi';
 import { useERC20 } from '@/hooks/useContract';
 import { useWeb3React } from '../../../../packages/wagmi/src/useWeb3React';
-import { Button } from '@mui/material';
-import { ethers } from 'ethers';
+import { Alert, Button, Snackbar } from '@mui/material';
 import { calculateGasMargin } from '@/utils';
+import { getErrorTextFromError, TxAction } from '@/ui-config/errorMapping';
+import {
+  gasLimitRecommendations,
+  ProtocolAction,
+} from '@aave/contract-helpers';
+import { APPROVAL_GAS_LIMIT } from '../utils';
 
 interface SwithProps {
   inputAmount: string;
@@ -46,12 +51,19 @@ const SwitchActions = ({
   );
   const ERC20contract = useERC20(inputToken as Address);
   const { data: walletClient } = useWalletClient();
-  const {data: gasPrice} = useGasPrice({
+  const { data: gasPrice } = useGasPrice({
     chainId,
   });
   const [user] = useRootStore((state) => [state.account]);
-  const { approvalTxState, loadingTxns, setApprovalTxState, setLoadingTxns } =
-    useModalContext();
+  const {
+    approvalTxState,
+    loadingTxns,
+    mainTxState,
+    setApprovalTxState,
+    setLoadingTxns,
+    setTxError,
+    setGasLimit,
+  } = useModalContext();
 
   const requiresApproval = useMemo(() => {
     if (
@@ -65,7 +77,6 @@ const SwitchActions = ({
   }, [approvedAmount, inputAmount, isWrongNetwork]);
 
   const approval = async () => {
-    let call;
     if (route) {
       const amountToApprove = calculateSignedAmount(
         inputAmount,
@@ -73,29 +84,40 @@ const SwitchActions = ({
         0,
       );
       try {
-        call = ERC20contract?.estimateGas
-          ?.approve([route.tokenTransferProxy, amountToApprove as any], {
+        const estimatedGasLimit = (await ERC20contract?.estimateGas?.approve(
+          [route.tokenTransferProxy, amountToApprove as any],
+          {
             account: user,
-          })
-          .then((estimatedGasLimit) => {
-            debugger;
-            return ERC20contract?.write?.approve(
-              [route.tokenTransferProxy, amountToApprove as any],
-              {
-                gas: calculateGasMargin(estimatedGasLimit),
-                account: user,
-                chain,
-                gasPrice,
-              },
-            );
-          });
-
-        // let estimatedGasBN = ethers.BigNumber.from(estimatedGas);
-
-        // // 增加 15% 安全余量
-        // estimatedGasBN = estimatedGasBN.mul(115).div(100);
-      } catch (e) {
-        console.log(e);
+          },
+        )) as bigint;
+        setApprovalTxState({ ...approvalTxState, loading: true });
+        const txWithGasEstimationRes = await ERC20contract?.write?.approve(
+          [route.tokenTransferProxy, amountToApprove as any],
+          {
+            gas: calculateGasMargin(estimatedGasLimit),
+            account: user,
+            chain,
+            gasPrice,
+          },
+        );
+        setApprovalTxState({
+          txHash: txWithGasEstimationRes,
+          loading: false,
+          success: true,
+        });
+        setTxError(undefined);
+        fetchApprovedAmount();
+      } catch (error) {
+        const parsedError = getErrorTextFromError(
+          error as any,
+          TxAction.GAS_ESTIMATION,
+          false,
+        );
+        setTxError(parsedError);
+        setApprovalTxState({
+          txHash: undefined,
+          loading: false,
+        });
       }
     }
   };
@@ -136,30 +158,44 @@ const SwitchActions = ({
     }
   }, [user, fetchApprovedAmount]);
 
+  useEffect(() => {
+    let switchGasLimit = 0;
+    switchGasLimit = Number(
+      gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended,
+    );
+    if (requiresApproval && !approvalTxState.success) {
+      switchGasLimit += Number(APPROVAL_GAS_LIMIT);
+    }
+    setGasLimit(switchGasLimit.toString());
+  }, [requiresApproval, approvalTxState, setGasLimit]);
+
   return (
-    <Button variant="contained" onClick={approval}>
-      aprove
-    </Button>
-    // <TxActionsWrapper
-    //   approvalTxState={approvalTxState}
-    //   isWrongNetwork={isWrongNetwork}
-    //   preparingTransactions={loadingTxns}
-    //   requiresAmount
-    //   amount={inputAmount}
-    //   handleApproval={() => approval()}
-    //   handleAction={action}
-    //   requiresApproval={!blocked && requiresApproval}
-    //   actionText={<>Switch</>}
-    //   actionInProgressText={<>Switching</>}
-    //   errorParams={{
-    //     loading: false,
-    //     disabled: blocked || (!approvalTxState.success && requiresApproval),
-    //     content: <>Switch</>,
-    //     handleClick: action,
-    //   }}
-    //   fetchingData={loading}
-    //   blocked={blocked}
-    // />
+    <>
+      {/* <Button variant="contained" onClick={approval}>
+        aprove
+      </Button> */}
+      <TxActionsWrapper
+        mainTxState={mainTxState}
+        approvalTxState={approvalTxState}
+        isWrongNetwork={isWrongNetwork}
+        preparingTransactions={loadingTxns}
+        handleAction={action}
+        requiresAmount
+        amount={inputAmount}
+        handleApproval={() => approval()}
+        requiresApproval={!blocked && requiresApproval}
+        actionText={<>Switch</>}
+        actionInProgressText={<>Switching</>}
+        errorParams={{
+          loading: false,
+          disabled: blocked || (!approvalTxState.success && requiresApproval),
+          content: <>Switch</>,
+          handleClick: action,
+        }}
+        fetchingData={loading}
+        blocked={blocked}
+      />
+    </>
   );
 };
 
