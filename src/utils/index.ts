@@ -13,7 +13,7 @@ export const safeGetAddress = memoize((value: any): Address | undefined => {
   }
 });
 
-// add 10%
+// add 10% buffer to gas estimates to account for slippage
 export function calculateGasMargin(
   value: bigint,
   margin = BigInt(1000),

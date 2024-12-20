@@ -29,6 +29,7 @@ import TxModalDetails from '../FlowCommons/TxModalDetails';
 import { Row } from '@/components/primitives/Row';
 import { FormattedNumber } from '@/components/primitives/FormattedNumber';
 import { formatUnits, zeroAddress } from 'viem';
+import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 interface SwitchModalContentProps {
   selectedChainId: number;
   setSelectedChainId: (value: number) => void;
@@ -322,7 +323,7 @@ const SwitchModalContent = ({
                 balance={selectedInputToken.balance}
                 inputAmount={debounceInputAmount}
               />
-              {/* {txError && <ParaswapErrorDisplay txError={txError} />} */}
+              {txError && <ParaswapErrorDisplay txError={txError} />}
               <SwitchActions
                 isWrongNetwork={isWrongNetwork.isWrongNetwork}
                 inputAmount={debounceInputAmount}

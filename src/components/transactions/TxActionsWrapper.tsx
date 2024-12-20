@@ -147,7 +147,7 @@ const TxActionsWrapper = ({
 
       <Button
         variant="contained"
-        // disabled={disabled || blocked || readOnlyModeAddress !== undefined}
+        disabled={disabled || blocked || readOnlyModeAddress !== undefined}
         onClick={handleClick}
         size="large"
         sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
