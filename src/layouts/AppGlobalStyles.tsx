@@ -44,7 +44,7 @@ export function AppGlobalStyles({ children }: { children: ReactNode }) {
 
   const theme = useMemo(() => {
     // const themeCreate = createTheme(getDesignTokens(mode));
-    const themeCreate = createTheme(getDesignTokens('dark'));
+    const themeCreate = createTheme(getDesignTokens(mode));
     return deepmerge(themeCreate, getThemedComponents(themeCreate));
   }, [mode]);
 
