@@ -6,9 +6,9 @@ import { SMART_ROUTER_ADDRESS } from '@/smart-router/constants/exchange';
 
 type SwapSellRatesParams = {
   amount: string;
-  srcToken: string;
+  srcToken: Address;
   srcDecimals: number;
-  destToken: string;
+  destToken: Address;
   destDecimals: number;
   chainId: number;
   user: string;
@@ -42,7 +42,7 @@ export const useSwapSellRates = ({
     // @ts-ignore
     queryFn: async () => {
       const valuesout = (await routerContract?.read?.getAmountsOut([
-        amount,
+        BigInt(amount),
         [srcToken, destToken],
       ])) as bigint[];
       return {

@@ -977,4 +977,4 @@ export const IUNISWAP_V2_ROUTER_ABI = [
     stateMutability: 'payable',
     type: 'receive',
   },
-];
+] as const;

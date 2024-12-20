@@ -7,6 +7,6 @@ export function useRouterContract() {
   const chainId = useChainId();
   return useContract(
     chainId && (SMART_ROUTER_ADDRESS as any)[chainId],
-    IUNISWAP_V2_ROUTER_ABI as Abi,
+    IUNISWAP_V2_ROUTER_ABI
   );
 }

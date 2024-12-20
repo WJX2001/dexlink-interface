@@ -1,5 +1,5 @@
 import { ChainId } from '@/smart-router/constants/chainIdList';
-import { zeroAddress } from 'viem';
+import { Address, zeroAddress } from 'viem';
 type ExtensionValue = string | number | boolean | null | undefined;
 export interface TokenInfo {
   readonly name: string;
@@ -7,7 +7,7 @@ export interface TokenInfo {
   readonly symbol: string;
   readonly logoURI?: string;
   readonly decimals: number;
-  readonly address: string;
+  readonly address: Address;
   readonly extensions?: {
     readonly [key: string]:
       | {
@@ -74,15 +74,15 @@ export const TOKEN_LIST: TokenList = {
         isNative: true,
       },
     },
-    {
-      name: 'Pearl',
-      symbol: 'PEARL',
-      address: '0xAc7B5DdC47D23ad480765120d17bF426B858F22a',
-      decimals: 18,
-      chainId: TMPNETWORK,
-      logoURI:
-        'https://assets.coingecko.com/coins/images/30799/large/Yp9H3agr_400x400.jpg?1696529660',
-    },
+    // {
+    //   name: 'Pearl',
+    //   symbol: 'PEARL',
+    //   address: '0xAc7B5DdC47D23ad480765120d17bF426B858F22a',
+    //   decimals: 18,
+    //   chainId: TMPNETWORK,
+    //   logoURI:
+    //     'https://assets.coingecko.com/coins/images/30799/large/Yp9H3agr_400x400.jpg?1696529660',
+    // },
     {
       name: 'Link',
       symbol: 'LINK',
