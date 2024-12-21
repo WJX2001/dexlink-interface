@@ -2,10 +2,11 @@ import { CogIcon } from '@heroicons/react/solid';
 import { Button, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
 import { DarkModeSwitcher } from './components/DarkModeSwitcher';
+import { PROD_ENV } from '@/utils/marketsAndNetworksConfig';
+import TestNetModeSwitcher from './components/TestNetModeSwitcher';
 const SettingsMenu = () => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
-
 
   const handleSettingsClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
@@ -52,7 +53,7 @@ const SettingsMenu = () => {
         </MenuItem>
 
         <DarkModeSwitcher component={MenuItem} />
-      
+        {PROD_ENV && <TestNetModeSwitcher />}
       </Menu>
     </div>
   );

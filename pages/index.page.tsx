@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       <DashboardTopPanel />
-      <ContentContainer>4444</ContentContainer>
+      <ContentContainer>Container</ContentContainer>
     </>
   )
 }
