@@ -1,11 +1,4 @@
-import {
-  Box,
-  ClickAwayListener,
-  experimental_sx,
-  Popper,
-  styled,
-  Tooltip,
-} from '@mui/material';
+import { Box, ClickAwayListener, createTheme, Popper, styled, Tooltip } from '@mui/material';
 import {
   JSXElementConstructor,
   ReactElement,
@@ -24,24 +17,26 @@ interface ContentWithTooltipProps {
   offset?: [number, number];
 }
 
-export const PopperComponent = styled(Popper)({
-  '.MuiTooltip-tooltip': {
-    color: 'text.primary',
-    backgroundColor: 'background.paper',
-    p: 0,
-    borderRadius: '6px',
-    boxShadow:
-      '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-    maxWidth: '280px',
-  },
-  '.MuiTooltip-arrow': {
-    color: 'background.paper',
-    '&:before': {
+export const PopperComponent = styled(Popper)(({ theme }) =>
+  theme.unstable_sx({
+    '.MuiTooltip-tooltip': {
+      color: 'text.primary',
+      backgroundColor: 'background.paper',
+      p: 0,
+      borderRadius: '6px',
       boxShadow:
         '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+      maxWidth: '280px',
     },
-  },
-});
+    '.MuiTooltip-arrow': {
+      color: 'background.paper',
+      '&:before': {
+        boxShadow:
+          '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+      },
+    },
+  }),
+);
 
 export const ContentWithTooltip = ({
   children,
@@ -70,8 +65,8 @@ export const ContentWithTooltip = ({
       disableHoverListener
       disableTouchListener
       placement={placement}
-      PopperComponent={PopperComponent}
-      componentsProps={{
+      // slots={{ popper: PopperComponent }}
+      slotProps={{
         popper: {
           modifiers: [
             {
@@ -82,6 +77,7 @@ export const ContentWithTooltip = ({
             },
           ],
           onClick: (e) => {
+            console.log("wjx")
             e.stopPropagation();
           },
         },

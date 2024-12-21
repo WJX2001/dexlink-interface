@@ -1,12 +1,5 @@
 import { InformationCircleIcon } from '@heroicons/react/outline';
-import {
-  Box,
-  BoxProps,
-  IconButton,
-  SvgIcon,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Box, BoxProps, IconButton, SvgIcon, Typography } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import {
   JSXElementConstructor,
@@ -14,6 +7,7 @@ import {
   ReactNode,
   useState,
 } from 'react';
+
 import { ContentWithTooltip } from './ContentWithTooltip';
 
 export interface TextWithTooltipProps extends TypographyProps {
@@ -45,6 +39,11 @@ export const TextWithTooltip = ({
 }: TextWithTooltipProps) => {
   const [open, setOpen] = useState(openProp);
 
+  const toggleOpen = () => {
+    if (setOpenProp) setOpenProp(!open);
+    setOpen(!open);
+  };
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', ...boxSx }} {...boxRest}>
       {text && (
@@ -52,41 +51,38 @@ export const TextWithTooltip = ({
           {text}
         </Typography>
       )}
-      <Tooltip
-        title={
-          <Box
+
+      <ContentWithTooltip
+        tooltipContent={<>{children}</>}
+        open={open}
+        setOpen={toggleOpen}
+      >
+        <IconButton
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: iconSize,
+            height: iconSize,
+            borderRadius: '50%',
+            p: 0,
+            minWidth: 0,
+            ml: iconMargin || 0.5,
+          }}
+          onClick={() => {}}
+        >
+          <SvgIcon
             sx={{
-              py: 4,
-              px: 6,
-              fontSize: '14px',
-              lineHeight: '16px',
-              a: {
-                fontSize: '14px',
-                lineHeight: '16px',
-                fontWeight: 500,
-                '&:hover': { textDecoration: 'underline' },
-              },
+              fontSize: iconSize,
+              color: iconColor ? iconColor : open ? 'info.main' : 'text.muted',
+              borderRadius: '50%',
+              '&:hover': { color: iconColor || 'info.main' },
             }}
           >
-            {children}
-          </Box>
-        }
-      >
-        <SvgIcon
-          onClick={(e) => {
-            console.log(e)
-            e.preventDefault()
-          }}
-          sx={{
-            fontSize: iconSize,
-            color: iconColor ? iconColor : open ? 'info.main' : 'text.muted',
-            borderRadius: '50%',
-            '&:hover': { color: iconColor || 'info.main' },
-          }}
-        >
-          {icon || <InformationCircleIcon />}
-        </SvgIcon>
-      </Tooltip>
+            {icon || <InformationCircleIcon />}
+          </SvgIcon>
+        </IconButton>
+      </ContentWithTooltip>
     </Box>
   );
 };
